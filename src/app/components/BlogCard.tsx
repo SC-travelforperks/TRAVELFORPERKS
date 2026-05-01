@@ -1,49 +1,32 @@
-import Link from "next/link";
-import type { BlogPost } from "@/data/blogs";
+import Link from 'next/link'
+import type { BlogPost } from '@/data/blogs'
 
-export function BlogCard({
-  post,
-  priority = false,
-}: {
-  post: BlogPost;
-  priority?: boolean;
-}) {
+export function BlogCard({ post, priority = false }: { post: BlogPost; priority?: boolean }) {
   return (
     <Link href={`/blogs/${post.slug}`} className="group block">
-      <div className="mb-6 overflow-hidden">
+      <div className="mb-5 overflow-hidden">
         <img
           src={post.image}
           alt={post.title}
-          className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-72"
-          loading={priority ? "eager" : "lazy"}
+          className="h-60 w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:h-64"
+          loading={priority ? 'eager' : 'lazy'}
         />
       </div>
-      <div
-        className="mb-3 flex items-center gap-3 text-xs tracking-[0.14em] text-accent"
-        style={{ fontFamily: "'Montserrat', sans-serif" }}
-      >
+      <div className="mb-3 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>
         <span>{post.date}</span>
-        <span className="text-border">|</span>
+        <span className="h-px w-4 bg-accent/40" />
         <span>{post.category}</span>
       </div>
-      <h3
-        className="mb-3 text-xl leading-snug transition-colors group-hover:text-accent"
-        style={{ fontFamily: "'Cormorant Garamond', serif" }}
-      >
+      <h3 className="mb-3 text-xl leading-snug transition-colors duration-200 group-hover:text-accent" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
         {post.title}
       </h3>
-      <p
-        className="mb-4 text-sm leading-relaxed text-muted-foreground"
-        style={{ fontFamily: "'Montserrat', sans-serif" }}
-      >
+      <p className="mb-5 text-sm leading-6 text-muted-foreground line-clamp-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>
         {post.excerpt}
       </p>
-      <span
-        className="text-sm tracking-[0.18em] text-primary transition-colors group-hover:text-accent"
-        style={{ fontFamily: "'Montserrat', sans-serif" }}
-      >
+      <span className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-primary transition-colors group-hover:text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>
         READ ARTICLE
+        <span className="h-px w-5 bg-current transition-all duration-300 group-hover:w-8" />
       </span>
     </Link>
-  );
+  )
 }

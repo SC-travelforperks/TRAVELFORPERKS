@@ -28,7 +28,7 @@ export default function App({ deals, reviews, gallery }: AppProps) {
   return (
     <div className="min-h-screen">
       <Navigation onPlanClick={() => setIsModalOpen(true)} />
-      <Hero onPlanClick={() => setIsModalOpen(true)} />
+      <Hero />
       <TrustBar />
       <About />
       <Services />

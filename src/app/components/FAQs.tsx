@@ -1,66 +1,48 @@
-import { useState } from 'react';
+'use client'
+
+import { useState } from 'react'
+import { useInView } from './useInView'
+
+const faqs = [
+  { question: 'How much does your service cost?', answer: 'Our services are complimentary for most bookings. We receive commissions from preferred partners, so there is typically no cost to you. For complex itineraries, a planning fee may apply and will be discussed upfront.' },
+  { question: 'What destinations do you specialise in?', answer: 'We specialise in luxury travel worldwide, with particular expertise in Europe, the Mediterranean, Asia-Pacific, Africa safaris, and the Caribbean. Our global network of vetted partners spans every major destination.' },
+  { question: 'How far in advance should I book?', answer: 'For the best availability and exclusive perks, we recommend booking 6–12 months in advance for peak season. That said, we can often accommodate last-minute requests with shorter notice.' },
+  { question: 'What are VIP perks?', answer: 'VIP perks typically include complimentary room upgrades, daily breakfast, resort credits, early check-in/late checkout, and exclusive amenities like spa treatments or welcome gifts — through our preferred partner relationships.' },
+  { question: 'Do you handle flights?', answer: 'Yes, flight planning and booking support is included in our Immersive Experiences package. We advise on optimal routing, business or first-class bookings, and mileage redemptions.' },
+  { question: 'What if something goes wrong during my trip?', answer: 'We provide 24/7 support throughout your journey. If any issues arise, we work directly with suppliers to resolve them immediately, leveraging our partner relationships for priority assistance.' },
+]
 
 export function FAQs() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const faqs = [
-    {
-      question: 'How much does your service cost?',
-      answer: 'Our services are complimentary for most bookings. We receive commissions from our preferred partners and suppliers, which means there is typically no cost to you. For complex itineraries requiring significant custom planning, we may charge a planning fee which will be discussed upfront.'
-    },
-    {
-      question: 'What destinations do you specialize in?',
-      answer: 'We specialize in luxury travel worldwide, with particular expertise in Europe, the Mediterranean, Asia-Pacific, Africa safaris, and the Caribbean. Our network of vetted partners spans the globe.'
-    },
-    {
-      question: 'How far in advance should I book?',
-      answer: 'For the best availability and exclusive perks, we recommend booking 6-12 months in advance for peak season travel. However, we can often accommodate last-minute requests and special occasions with shorter notice.'
-    },
-    {
-      question: 'What are VIP perks?',
-      answer: 'VIP perks vary by property but typically include complimentary room upgrades (subject to availability), daily breakfast, resort credits, early check-in/late checkout, and exclusive amenities like spa treatments or welcome gifts.'
-    },
-    {
-      question: 'Do you handle flights?',
-      answer: 'Yes, we provide flight planning and booking support as part of our Immersive Experiences package. We can recommend optimal routing, help with mileage redemptions, and coordinate business or first-class bookings.'
-    },
-    {
-      question: 'What happens if something goes wrong during my trip?',
-      answer: 'We provide 24/7 support throughout your journey. If any issues arise, we work directly with suppliers on your behalf to resolve them immediately. Our relationships with partners ensure priority assistance.'
-    }
-  ];
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const { ref, inView } = useInView()
 
   return (
-    <section id="faqs" className="bg-white py-16 sm:py-20 lg:py-24">
+    <section id="faqs" ref={ref as React.RefObject<HTMLElement>} className="bg-background py-20 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-8">
-        <h2 className="mb-4 text-center text-3xl uppercase tracking-[0.06em] sm:text-4xl md:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Frequently Asked Questions</h2>
-        <p className="mb-12 text-center text-sm leading-7 text-muted-foreground sm:mb-16 sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-          Everything you need to know about working with us
-        </p>
 
-        <div className="space-y-4">
+        <div className={`mb-14 text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
+          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>FAQ</p>
+          <h2 className="text-4xl uppercase tracking-[0.04em] sm:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Common Questions</h2>
+        </div>
+
+        <div className={inView ? 'fade-up d-200' : 'opacity-0'}>
           {faqs.map((faq, index) => (
-            <div key={index} className="border-b border-border pb-4">
+            <div key={index} className="border-b border-border">
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full text-left flex items-center justify-between py-4 group"
+                className="flex w-full items-center justify-between gap-6 py-6 text-left"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                <span className="pr-6 text-base leading-7 sm:pr-8 sm:text-lg">{faq.question}</span>
-                <span className="text-2xl text-accent transition-transform duration-300" style={{ transform: openIndex === index ? 'rotate(45deg)' : 'rotate(0)' }}>
-                  +
-                </span>
+                <span className="text-sm uppercase tracking-[0.12em] text-primary sm:text-base">{faq.question}</span>
+                <span className="flex-shrink-0 text-xl text-accent transition-transform duration-300" style={{ transform: openIndex === index ? 'rotate(45deg)' : 'rotate(0deg)' }}>+</span>
               </button>
-
-              {openIndex === index && (
-                <div className="pb-4 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  {faq.answer}
-                </div>
-              )}
+              <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{ maxHeight: openIndex === index ? '300px' : '0px' }}>
+                <p className="pb-6 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>{faq.answer}</p>
+              </div>
             </div>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

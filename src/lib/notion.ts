@@ -127,6 +127,8 @@ export interface GalleryItem {
   id: string;
   title: string;
   image: string;
+  caption?: string;
+  tag?: string;
 }
 
 async function fetchGalleryFromNotion(): Promise<GalleryItem[]> {
@@ -151,7 +153,13 @@ async function fetchGalleryFromNotion(): Promise<GalleryItem[]> {
       const image = getUrl(props.Image);
       if (!title || !image) continue;
 
-      items.push({ id: page.id, title, image });
+      items.push({
+        id: page.id,
+        title,
+        image,
+        caption: getRichText(props.Caption) || undefined,
+        tag: getSelect(props.Tag) || undefined,
+      });
     }
 
     return items;
@@ -185,4 +193,10 @@ function getUrl(prop: unknown): string {
   if (!prop || typeof prop !== "object") return "";
   const p = prop as { url?: string };
   return p.url ?? "";
+}
+
+function getSelect(prop: unknown): string {
+  if (!prop || typeof prop !== "object") return "";
+  const p = prop as { select?: { name?: string } };
+  return p.select?.name ?? "";
 }

@@ -1,44 +1,46 @@
+'use client'
+
+import { useInView } from './useInView'
+
+const steps = [
+  { number: '01', title: 'Share Your Idea', description: 'Tell us your dream destination, travel dates, and what makes your perfect trip.' },
+  { number: '02', title: 'We Plan Everything', description: 'We curate a bespoke itinerary with hand-picked hotels, exclusive perks, and every detail handled.' },
+  { number: '03', title: "You Travel in Style", description: 'Arrive knowing everything is taken care of, with 24/7 support throughout your journey.' },
+]
+
 export function Process() {
-  const steps = [
-    {
-      number: '01',
-      title: 'Share Your Idea',
-      description: 'Tell us about your dream destination, travel dates, preferences, and what makes your perfect trip.'
-    },
-    {
-      number: '02',
-      title: 'The Planning Process',
-      description: 'We curate a personalized itinerary with hand-picked hotels, experiences, and exclusive perks.'
-    },
-    {
-      number: '03',
-      title: "You're Travelling",
-      description: 'Enjoy your journey with 24/7 support and seamless coordination of every detail.'
-    }
-  ];
+  const { ref, inView } = useInView()
 
   return (
-    <section id="process" className="bg-background py-16 sm:py-20 lg:py-24">
+    <section id="process" ref={ref as React.RefObject<HTMLElement>} className="bg-primary py-20 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <h2 className="mb-4 text-center text-3xl sm:text-4xl md:text-5xl" style={{ fontFamily: "'Playfair Display', serif" }}>How We Work</h2>
-        <p className="mx-auto mb-12 max-w-2xl text-center text-sm leading-7 text-muted-foreground sm:mb-16 sm:text-base lg:mb-20" style={{ fontFamily: "'Inter', sans-serif" }}>
-          Our simple three-step process takes you from inspiration to extraordinary experiences
-        </p>
 
-        <div className="grid gap-10 md:grid-cols-3 md:gap-12">
+        <div className={`mx-auto mb-16 max-w-2xl text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
+          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>How It Works</p>
+          <h2 className="text-4xl uppercase tracking-[0.04em] text-primary-foreground sm:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            Three Steps to Your Perfect Trip
+          </h2>
+        </div>
+
+        <div className="relative grid gap-12 md:grid-cols-3 md:gap-8">
+          {/* connecting line desktop */}
+          <div className="absolute left-0 right-0 top-10 hidden h-px bg-primary-foreground/10 md:block" />
+
           {steps.map((step, index) => (
-            <div key={index} className="text-center">
-              <div className="mb-5 text-5xl text-accent font-light opacity-40 sm:text-6xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-                {step.number}
+            <div
+              key={index}
+              className={`relative text-center ${inView ? 'fade-up' : 'opacity-0'}`}
+              style={{ animationDelay: `${index * 200}ms` }}
+            >
+              <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center border border-primary-foreground/20 bg-primary">
+                <span className="text-4xl font-light text-accent/60" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{step.number}</span>
               </div>
-              <h3 className="text-2xl mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>{step.title}</h3>
-              <p className="text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
-                {step.description}
-              </p>
+              <h3 className="mb-4 text-2xl uppercase tracking-[0.05em] text-primary-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{step.title}</h3>
+              <p className="mx-auto max-w-[240px] text-sm leading-7 text-primary-foreground/60" style={{ fontFamily: "'Montserrat', sans-serif" }}>{step.description}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

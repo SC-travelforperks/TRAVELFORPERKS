@@ -1,26 +1,42 @@
-import type { Review } from "@/lib/notion";
+'use client'
+
+import { useInView } from './useInView'
+import type { Review } from '@/lib/notion'
 
 export function Reviews({ reviews }: { reviews: Review[] }) {
-  return (
-    <section id="reviews" className="bg-background py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <h2 className="mb-4 text-center text-3xl uppercase tracking-[0.06em] sm:text-4xl md:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Client Experiences</h2>
-        <p className="mx-auto mb-12 max-w-2xl text-center text-sm leading-7 text-muted-foreground sm:mb-16 sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-          Hear from travelers who've experienced the difference
-        </p>
+  const { ref, inView } = useInView()
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 lg:gap-12">
+  return (
+    <section id="reviews" ref={ref as React.RefObject<HTMLElement>} className="bg-secondary/30 py-20 sm:py-24 lg:py-32 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+
+        <div className={`mx-auto mb-14 max-w-2xl text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
+          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>Testimonials</p>
+          <h2 className="text-4xl uppercase tracking-[0.04em] sm:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Client Experiences</h2>
+        </div>
+
+        {/* Horizontal scroll carousel */}
+        <div
+          className={`flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none ${inView ? 'fade-up d-200' : 'opacity-0'}`}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           {reviews.map((review) => (
-            <div key={review.id} className="border border-border bg-white px-5 py-6 text-center sm:px-6">
-              <p className="mb-6 text-sm italic leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                "{review.quote}"
+            <div
+              key={review.id}
+              className="relative flex-shrink-0 w-[85vw] max-w-sm snap-start border border-border bg-card px-7 py-8 sm:w-80"
+            >
+              <div className="mb-5 text-5xl leading-none text-accent/25" style={{ fontFamily: "'Cormorant Garamond', serif" }}>&ldquo;</div>
+              <p className="mb-8 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                {review.quote}
               </p>
-              <div className="text-sm tracking-[0.18em]" style={{ fontFamily: "'Montserrat', sans-serif" }}>{review.name}</div>
-              <div className="mt-1 text-xs text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>{review.location}</div>
+              <div className="border-t border-border pt-5">
+                <div className="text-sm uppercase tracking-[0.16em] text-primary" style={{ fontFamily: "'Montserrat', sans-serif" }}>{review.name}</div>
+                <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>{review.location}</div>
+              </div>
             </div>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -25,19 +25,15 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <Link
             href="/"
-            className={`pr-4 text-xs tracking-[0.28em] sm:text-sm ${
-              isScrolled ? "text-primary" : "text-white"
-            }`}
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
+            className="pr-4 text-xs tracking-[0.28em] text-primary sm:text-sm"
+            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}
           >
             TRAVEL FOR PERKS
           </Link>
 
           <div
-            className={`hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex ${
-              isScrolled ? "text-primary" : "text-white"
-            }`}
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
+            className={`hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex text-primary`}
+            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}
           >
             <a href="#about" className="transition-opacity hover:opacity-70">About</a>
             <a href="#services" className="transition-opacity hover:opacity-70">Services</a>
@@ -50,8 +46,8 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
           <div className="flex items-center gap-3">
             <button
               onClick={onPlanClick}
-              className="hidden border border-accent bg-accent px-5 py-2.5 text-[11px] tracking-[0.22em] text-white transition-all hover:opacity-90 sm:inline-flex"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              className="hidden bg-primary px-5 py-2.5 text-[11px] tracking-[0.22em] text-primary-foreground transition-all duration-300 hover:bg-primary/85 sm:inline-flex"
+              style={{ fontFamily: "'Montserrat', sans-serif", boxShadow: '2px 2px 0px 0px rgba(76,51,43,0.35)' }}
             >
               PLAN YOUR TRIP
             </button>
@@ -62,7 +58,7 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
               className={`inline-flex items-center justify-center p-2.5 transition-colors lg:hidden ${
                 isScrolled
                   ? "border border-border bg-card text-primary hover:bg-secondary"
-                  : "border border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+                  : "border border-primary/30 bg-primary/10 text-primary backdrop-blur-sm hover:bg-primary/20"
               }`}
               aria-label="Open navigation menu"
             >
