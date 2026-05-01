@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-export function useInView(threshold = 0.12) {
+export function useInView(threshold = 0.07) {
   const ref = useRef<HTMLElement>(null)
   const [inView, setInView] = useState(false)
 

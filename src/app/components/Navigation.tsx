@@ -26,21 +26,21 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
           <Link
             href="/"
             className="pr-4 text-xs tracking-[0.28em] text-primary sm:text-sm"
-            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}
+            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
           >
             TRAVEL FOR PERKS
           </Link>
 
           <div
             className={`hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex text-primary`}
-            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}
+            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
           >
-            <a href="#about" className="transition-opacity hover:opacity-70">About</a>
-            <a href="#services" className="transition-opacity hover:opacity-70">Services</a>
-            <a href="#deals" className="transition-opacity hover:opacity-70">Deals</a>
-            <a href="#gallery" className="transition-opacity hover:opacity-70">Gallery</a>
-            <a href="#blogs" className="transition-opacity hover:opacity-70">Insights</a>
-            <a href="#social" className="transition-opacity hover:opacity-70">Social</a>
+            <a href="#about" className="inline-block transition-transform duration-200 hover:scale-110">About</a>
+            <a href="#services" className="inline-block transition-transform duration-200 hover:scale-110">Services</a>
+            <a href="#deals" className="inline-block transition-transform duration-200 hover:scale-110">Deals</a>
+            <a href="#gallery" className="inline-block transition-transform duration-200 hover:scale-110">Gallery</a>
+            <a href="#blogs" className="inline-block transition-transform duration-200 hover:scale-110">Insights</a>
+            <a href="#social" className="inline-block transition-transform duration-200 hover:scale-110">Social</a>
           </div>
 
           <div className="flex items-center gap-3">

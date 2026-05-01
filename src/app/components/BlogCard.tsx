@@ -3,7 +3,7 @@ import type { BlogPost } from '@/data/blogs'
 
 export function BlogCard({ post, priority = false }: { post: BlogPost; priority?: boolean }) {
   return (
-    <Link href={`/blogs/${post.slug}`} className="group block">
+    <Link href={`/blogs/${post.slug}`} className="group block transition-transform duration-500 hover:-translate-y-1.5">
       <div className="mb-5 overflow-hidden">
         <img
           src={post.image}

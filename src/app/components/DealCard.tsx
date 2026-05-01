@@ -3,7 +3,7 @@ import type { Deal } from '@/lib/notion'
 
 export function DealCard({ deal, priority = false }: { deal: Deal; priority?: boolean }) {
   return (
-    <Link href={`/deals/${deal.slug}`} className="group block overflow-hidden bg-background border border-border hover:border-accent transition-colors duration-300">
+    <Link href={`/deals/${deal.slug}`} className="group block overflow-hidden bg-background border border-border hover:border-accent transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl">
       <div className="relative overflow-hidden">
         <img
           src={deal.image}
