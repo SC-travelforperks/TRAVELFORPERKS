@@ -40,7 +40,7 @@ export default async function DealDetailPage({ params }: DealPageProps) {
 
   return (
     <InternalPageShell>
-      <main className="min-h-screen bg-background pb-24">
+      <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="relative">
           <div className="absolute inset-0">
             <img
@@ -51,7 +51,7 @@ export default async function DealDetailPage({ params }: DealPageProps) {
             <div className="absolute inset-0 bg-black/45" />
           </div>
 
-          <div className="relative mx-auto max-w-7xl px-8 py-24 md:py-32">
+          <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-6 md:py-24 lg:px-8 lg:py-32">
             <Link
               href="/deals"
               className="mb-8 inline-block text-sm tracking-[0.18em] text-white/80 hover:text-white"
@@ -67,13 +67,13 @@ export default async function DealDetailPage({ params }: DealPageProps) {
                 {deal.location}
               </p>
               <h1
-                className="mb-5 text-5xl md:text-6xl"
+                className="mb-5 text-4xl sm:text-5xl md:text-6xl"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {deal.title}
               </h1>
               <p
-                className="mb-6 text-lg leading-8 text-white/85"
+                className="mb-6 text-base leading-7 text-white/85 sm:text-lg sm:leading-8"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 {deal.overview}
@@ -88,10 +88,10 @@ export default async function DealDetailPage({ params }: DealPageProps) {
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-7xl gap-12 px-8 py-16 lg:grid-cols-[1.2fr_0.8fr]">
+        <section className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.2fr_0.8fr] lg:px-8 lg:gap-12">
           <div>
             <h2
-              className="mb-5 text-3xl"
+              className="mb-5 text-2xl sm:text-3xl"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Why This Deal Stands Out
@@ -103,7 +103,7 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               {deal.summary}
             </p>
 
-            <div className="grid gap-10 md:grid-cols-2">
+            <div className="grid gap-8 md:grid-cols-2 lg:gap-10">
               <div>
                 <h3
                   className="mb-4 text-xl"
@@ -144,7 +144,7 @@ export default async function DealDetailPage({ params }: DealPageProps) {
             </div>
           </div>
 
-          <aside className="h-fit border border-border bg-white p-8">
+          <aside className="h-fit border border-border bg-white p-6 sm:p-8">
             <p
               className="mb-3 text-sm tracking-[0.18em] text-accent"
               style={{ fontFamily: "'Inter', sans-serif" }}

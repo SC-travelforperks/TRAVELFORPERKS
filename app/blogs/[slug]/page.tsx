@@ -40,9 +40,9 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
 
   return (
     <InternalPageShell>
-      <main className="min-h-screen bg-background pb-24">
+      <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="border-b border-border bg-white">
-          <div className="mx-auto grid max-w-7xl gap-10 px-8 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-8 lg:gap-10">
             <div>
               <Link
                 href="/blogs"
@@ -62,13 +62,13 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
                 <span>{post.readTime}</span>
               </div>
               <h1
-                className="mb-6 text-5xl md:text-6xl"
+                className="mb-6 text-4xl sm:text-5xl md:text-6xl"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {post.title}
               </h1>
               <p
-                className="max-w-2xl text-lg leading-8 text-muted-foreground"
+                className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 {post.intro}
@@ -79,25 +79,25 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
               <img
                 src={post.image}
                 alt={post.title}
-                className="h-full w-full object-cover"
+                className="h-full max-h-[420px] w-full object-cover lg:max-h-none"
               />
             </div>
           </div>
         </section>
 
-        <article className="mx-auto max-w-4xl px-8 py-16">
+        <article className="mx-auto max-w-4xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
           <div
-            className="mb-12 text-lg leading-8 text-foreground"
+            className="mb-10 text-base leading-7 text-foreground sm:mb-12 sm:text-lg sm:leading-8"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {post.excerpt}
           </div>
 
-          <div className="space-y-12">
+          <div className="space-y-10 sm:space-y-12">
             {post.sections.map((section) => (
               <section key={section.heading}>
                 <h2
-                  className="mb-4 text-3xl"
+                  className="mb-4 text-2xl sm:text-3xl"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {section.heading}

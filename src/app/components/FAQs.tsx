@@ -31,10 +31,10 @@ export function FAQs() {
   ];
 
   return (
-    <section id="faqs" className="py-24 bg-white">
-      <div className="max-w-4xl mx-auto px-8">
-        <h2 className="text-4xl md:text-5xl text-center mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Frequently Asked Questions</h2>
-        <p className="text-center text-muted-foreground mb-16" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <section id="faqs" className="bg-white py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-8">
+        <h2 className="mb-4 text-center text-3xl uppercase tracking-[0.06em] sm:text-4xl md:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Frequently Asked Questions</h2>
+        <p className="mb-12 text-center text-sm leading-7 text-muted-foreground sm:mb-16 sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
           Everything you need to know about working with us
         </p>
 
@@ -44,16 +44,16 @@ export function FAQs() {
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="w-full text-left flex items-center justify-between py-4 group"
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                <span className="text-lg pr-8">{faq.question}</span>
+                <span className="pr-6 text-base leading-7 sm:pr-8 sm:text-lg">{faq.question}</span>
                 <span className="text-2xl text-accent transition-transform duration-300" style={{ transform: openIndex === index ? 'rotate(45deg)' : 'rotate(0)' }}>
                   +
                 </span>
               </button>
 
               {openIndex === index && (
-                <div className="pb-4 text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <div className="pb-4 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                   {faq.answer}
                 </div>
               )}

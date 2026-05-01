@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 export default function DealsPage() {
   return (
     <InternalPageShell>
-      <main className="min-h-screen bg-background pb-24">
+      <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="border-b border-border bg-secondary/35">
-          <div className="mx-auto flex max-w-7xl flex-col gap-6 px-8 py-20">
+          <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-16 sm:px-6 sm:py-20 lg:px-8">
             <Link
               href="/"
               className="text-sm tracking-[0.18em] text-muted-foreground hover:text-accent"
@@ -31,13 +31,13 @@ export default function DealsPage() {
                 TRAVEL FOR PERKS
               </p>
               <h1
-                className="mb-6 text-5xl md:text-6xl"
+                className="mb-6 text-4xl sm:text-5xl md:text-6xl"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Exclusive Luxury Travel Deals
               </h1>
               <p
-                className="text-lg leading-8 text-muted-foreground"
+                className="text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Explore our current collection of handpicked offers. Each one is
@@ -48,8 +48,8 @@ export default function DealsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-8 py-16">
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <section className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
             {deals.map((deal, index) => (
               <DealCard key={deal.slug} deal={deal} priority={index < 2} />
             ))}

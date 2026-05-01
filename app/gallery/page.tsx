@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 export default function GalleryPage() {
   return (
     <InternalPageShell>
-      <main className="min-h-screen bg-background pb-24">
+      <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="border-b border-border bg-secondary/35">
-          <div className="mx-auto max-w-7xl px-8 py-20">
+          <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 sm:py-20 lg:px-8">
             <Link
               href="/"
               className="mb-8 inline-block text-sm tracking-[0.18em] text-muted-foreground hover:text-accent"
@@ -30,13 +30,13 @@ export default function GalleryPage() {
                 TRAVEL FOR PERKS
               </p>
               <h1
-                className="mb-6 text-5xl md:text-6xl"
+                className="mb-6 text-4xl sm:text-5xl md:text-6xl"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Travel Gallery
               </h1>
               <p
-                className="text-lg leading-8 text-muted-foreground"
+                className="text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 A visual collection of the hotels, flavors, places, and moments
@@ -46,8 +46,8 @@ export default function GalleryPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-8 py-16">
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <section className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3 lg:gap-6">
             {galleryItems.map((item, index) => (
               <article
                 key={item.id}
@@ -61,7 +61,7 @@ export default function GalleryPage() {
                     loading={index < 2 ? "eager" : "lazy"}
                   />
                 </div>
-                <div className="px-6 py-5">
+                <div className="px-5 py-5 sm:px-6">
                   <div
                     className="mb-3 inline-flex border border-accent/20 bg-accent/10 px-3 py-1 text-xs uppercase tracking-[0.18em] text-accent"
                     style={{ fontFamily: "'Inter', sans-serif" }}

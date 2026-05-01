@@ -18,21 +18,21 @@ export function Reviews() {
   ];
 
   return (
-    <section id="reviews" className="py-24 bg-background">
-      <div className="max-w-7xl mx-auto px-8">
-        <h2 className="text-4xl md:text-5xl text-center mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Client Experiences</h2>
-        <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <section id="reviews" className="bg-background py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <h2 className="mb-4 text-center text-3xl uppercase tracking-[0.06em] sm:text-4xl md:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Client Experiences</h2>
+        <p className="mx-auto mb-12 max-w-2xl text-center text-sm leading-7 text-muted-foreground sm:mb-16 sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
           Hear from travelers who've experienced the difference
         </p>
 
-        <div className="grid md:grid-cols-3 gap-12">
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 lg:gap-12">
           {reviews.map((review, index) => (
-            <div key={index} className="text-center">
-              <p className="text-muted-foreground leading-relaxed mb-6 italic" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <div key={index} className="border border-border bg-white px-5 py-6 text-center sm:px-6">
+              <p className="mb-6 text-sm italic leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 "{review.text}"
               </p>
-              <div className="text-sm tracking-wide" style={{ fontFamily: "'Inter', sans-serif" }}>{review.author}</div>
-              <div className="text-xs text-accent mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>{review.location}</div>
+              <div className="text-sm tracking-[0.18em]" style={{ fontFamily: "'Montserrat', sans-serif" }}>{review.author}</div>
+              <div className="mt-1 text-xs text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>{review.location}</div>
             </div>
           ))}
         </div>
