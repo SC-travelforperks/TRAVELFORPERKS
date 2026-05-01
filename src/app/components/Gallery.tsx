@@ -1,8 +1,6 @@
-import Link from "next/link";
-import { featuredGalleryItems } from "@/data/gallery";
+import type { GalleryItem } from "@/lib/notion";
 
-export function Gallery() {
-
+export function Gallery({ galleryItems }: { galleryItems: GalleryItem[] }) {
   return (
     <section id="gallery" className="bg-white py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
@@ -12,7 +10,7 @@ export function Gallery() {
         </p>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
-          {featuredGalleryItems.map((item, index) => (
+          {galleryItems.map((item, index) => (
             <div key={item.id} className="overflow-hidden group aspect-square bg-secondary/25">
               <img
                 src={item.image}
@@ -22,16 +20,6 @@ export function Gallery() {
               />
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Link
-            href="/gallery"
-            className="inline-flex w-full items-center justify-center border border-primary px-8 py-4 text-sm tracking-[0.18em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground sm:w-auto"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
-          >
-            VIEW MORE PHOTOS
-          </Link>
         </div>
       </div>
     </section>

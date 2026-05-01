@@ -1,16 +1,50 @@
+const partners = [
+  { name: "Virtuoso",              file: "virtuoso.png" },
+  { name: "Preferred Hotels",      file: "preferred.png" },
+  { name: "Belmond",               file: "belmond.png" },
+  { name: "Four Seasons",          file: "four-seasons.png" },
+  { name: "Rosewood",              file: "rosewood.png" },
+  { name: "Mandarin Oriental",     file: "mandarin-oriental.png" },
+  { name: "Aman",                  file: "aman.png" },
+  { name: "Raffles",               file: "raffles.png" },
+  { name: "Ritz-Carlton",          file: "ritz-carlton.png" },
+  { name: "Six Senses",            file: "six-senses.png" },
+  { name: "Orient Express",        file: "orient-express.png" },
+  { name: "Dorchester",            file: "dorchester.png" },
+];
+
 export function TrustBar() {
+  const track = [...partners, ...partners];
+
   return (
-    <section className="bg-accent py-6 sm:py-8">
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div
-          className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-center text-[11px] uppercase tracking-[0.28em] text-white/90 sm:gap-x-12"
-          style={{ fontFamily: "'Montserrat', sans-serif" }}
-        >
-          <div>Jetset</div>
-          <div>Virtuoso</div>
-          <div>Preferred Hotels</div>
-          <div>Belmond</div>
-        </div>
+    <section className="bg-accent py-6 sm:py-8 overflow-hidden">
+      <style>{`
+        @keyframes marquee {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+          display: flex;
+          width: max-content;
+          animation: marquee 30s linear infinite;
+        }
+        .marquee-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+
+      <div className="marquee-track">
+        {track.map((partner, i) => (
+          <div key={i} className="flex items-center justify-center px-8 sm:px-12">
+            <div className="w-24 h-8 sm:w-28 sm:h-9 flex items-center justify-center">
+              <img
+                src={`/partners/${partner.file}`}
+                alt={partner.name}
+                className="max-w-full max-h-full w-auto h-auto object-contain brightness-0 invert opacity-80"
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

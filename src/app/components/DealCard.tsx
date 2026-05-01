@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Deal } from "@/data/deals";
+import type { Deal } from "@/lib/notion";
 
 export function DealCard({
   deal,

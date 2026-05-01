@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { DealCard } from "@/app/components/DealCard";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
-import { deals } from "@/data/deals";
+import { getDeals } from "@/lib/notion";
 
 export const metadata: Metadata = {
   title: "Luxury Travel Deals | Travel For Perks",
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
     "Browse exclusive luxury travel deals with VIP perks, added amenities, and curated hotel offers from Travel For Perks.",
 };
 
-export default function DealsPage() {
+export default async function DealsPage() {
+  const deals = await getDeals();
   return (
     <InternalPageShell>
       <main className="min-h-screen bg-background pb-20 sm:pb-24">

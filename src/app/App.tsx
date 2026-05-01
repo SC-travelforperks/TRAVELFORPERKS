@@ -14,8 +14,15 @@ import { Blogs } from './components/Blogs';
 import { FAQs } from './components/FAQs';
 import { Footer } from './components/Footer';
 import { EnquiryModal } from './components/EnquiryModal';
+import type { Deal, Review, GalleryItem } from '@/lib/notion';
 
-export default function App() {
+interface AppProps {
+  deals: Deal[];
+  reviews: Review[];
+  gallery: GalleryItem[];
+}
+
+export default function App({ deals, reviews, gallery }: AppProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -26,9 +33,9 @@ export default function App() {
       <About />
       <Services />
       <Process />
-      <Deals />
-      <Reviews />
-      <Gallery />
+      <Deals deals={deals} />
+      <Reviews reviews={reviews} />
+      <Gallery galleryItems={gallery} />
       <Blogs />
       <FAQs />
       <Footer onPlanClick={() => setIsModalOpen(true)} />
