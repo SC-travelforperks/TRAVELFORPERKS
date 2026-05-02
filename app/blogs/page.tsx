@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BlogCard } from "@/app/components/BlogCard";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
-import { blogPosts } from "@/data/blogs";
+import { getBlogs } from "@/lib/notion";
 
 export const metadata: Metadata = {
   title: "Latest Insights | Travel For Perks",
@@ -10,7 +10,9 @@ export const metadata: Metadata = {
     "Read destination notes, hotel updates, and luxury travel planning insights from Travel For Perks.",
 };
 
-export default function BlogsPage() {
+export default async function BlogsPage() {
+  const posts = await getBlogs();
+
   return (
     <InternalPageShell>
       <main className="min-h-screen bg-background pb-20 sm:pb-24">
@@ -48,8 +50,8 @@ export default function BlogsPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 lg:gap-10">
-            {blogPosts.map((post, index) => (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
+            {posts.map((post, index) => (
               <BlogCard key={post.slug} post={post} priority={index < 2} />
             ))}
           </div>

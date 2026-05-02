@@ -21,7 +21,7 @@ export function Deals({ deals }: { deals: Deal[] }) {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
-          {deals.slice(0, 6).map((deal, index) => (
+          {deals.slice(0, 3).map((deal, index) => (
             <div
               key={deal.id}
               className={inView ? 'fade-up' : 'opacity-0'}

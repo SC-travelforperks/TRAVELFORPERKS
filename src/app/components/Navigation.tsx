@@ -25,29 +25,33 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <Link
             href="/"
-            className="pr-4 text-xs tracking-[0.28em] text-primary sm:text-sm"
+            className={`pr-4 text-xs tracking-[0.28em] sm:text-sm transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}
             style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
           >
             TRAVEL FOR PERKS
           </Link>
 
           <div
-            className={`hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex text-primary`}
+            className={`hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}
             style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
           >
-            <a href="#about" className="inline-block transition-transform duration-200 hover:scale-110">About</a>
-            <a href="#services" className="inline-block transition-transform duration-200 hover:scale-110">Services</a>
-            <a href="#deals" className="inline-block transition-transform duration-200 hover:scale-110">Deals</a>
-            <a href="#gallery" className="inline-block transition-transform duration-200 hover:scale-110">Gallery</a>
-            <a href="#blogs" className="inline-block transition-transform duration-200 hover:scale-110">Insights</a>
-            <a href="#social" className="inline-block transition-transform duration-200 hover:scale-110">Social</a>
+            <a href="#about" className="transition-opacity duration-200 hover:opacity-60">About</a>
+            <a href="#services" className="transition-opacity duration-200 hover:opacity-60">Services</a>
+            <a href="#deals" className="transition-opacity duration-200 hover:opacity-60">Deals</a>
+            <a href="#gallery" className="transition-opacity duration-200 hover:opacity-60">Gallery</a>
+            <a href="#blogs" className="transition-opacity duration-200 hover:opacity-60">Insights</a>
+            <a href="#social" className="transition-opacity duration-200 hover:opacity-60">Social</a>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={onPlanClick}
-              className="hidden bg-primary px-5 py-2.5 text-[11px] tracking-[0.22em] text-primary-foreground transition-all duration-300 hover:bg-primary/85 sm:inline-flex"
-              style={{ fontFamily: "'Montserrat', sans-serif", boxShadow: '2px 2px 0px 0px rgba(76,51,43,0.35)' }}
+              className={`hidden px-5 py-2.5 text-[11px] tracking-[0.22em] transition-all duration-300 sm:inline-flex ${
+                isScrolled
+                  ? "bg-primary text-primary-foreground hover:bg-primary/85"
+                  : "border border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white hover:text-primary"
+              }`}
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               PLAN YOUR TRIP
             </button>
@@ -58,7 +62,7 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
               className={`inline-flex items-center justify-center p-2.5 transition-colors lg:hidden ${
                 isScrolled
                   ? "border border-border bg-card text-primary hover:bg-secondary"
-                  : "border border-primary/30 bg-primary/10 text-primary backdrop-blur-sm hover:bg-primary/20"
+                  : "border border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
               }`}
               aria-label="Open navigation menu"
             >

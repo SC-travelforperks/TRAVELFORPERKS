@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Footer } from "./Footer";
 import { EnquiryModal } from "./EnquiryModal";
+import { FloatingContact } from "./FloatingContact";
 import { useScrollHeaderVisibility } from "./useScrollHeaderVisibility";
 
 export function InternalPageShell({
@@ -29,7 +30,7 @@ export function InternalPageShell({
           <Link
             href="/"
             className="pr-4 text-xs tracking-[0.28em] text-primary sm:text-sm"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
+            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
           >
             TRAVEL FOR PERKS
           </Link>
@@ -133,6 +134,7 @@ export function InternalPageShell({
       {children}
 
       <Footer onPlanClick={() => setIsModalOpen(true)} />
+      <FloatingContact onEnquiryClick={() => setIsModalOpen(true)} />
       <EnquiryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

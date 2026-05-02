@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import '../src/styles/index.css'
+import { Toaster } from '../src/app/components/ui/sonner'
 
 export const metadata: Metadata = {
   title: 'Travel For Perks',
@@ -9,7 +10,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        {children}
+        <Toaster />
+      </body>
     </html>
   )
 }

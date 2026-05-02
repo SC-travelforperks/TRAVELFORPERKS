@@ -34,8 +34,8 @@ export function About() {
               Planning your dream trip shouldn&apos;t feel like another job
             </h2>
             <div className="space-y-5 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-              <p>Sifting through endless reviews, comparing hotels, and coordinating logistics can be exhausting — especially when you want everything to be perfect.</p>
-              <p>When you work with a luxury travel advisor, the only decision you&apos;ll need to make is where you want to go. We handle everything else, with access to exclusive perks your booking platform can&apos;t offer.</p>
+              <p>Sifting through endless reviews, comparing properties, and coordinating every detail can consume the very excitement that travel should bring.</p>
+              <p>When you travel with us, the only decision you need to make is where to go. We handle everything else — with access to perks, upgrades, and experiences that simply aren&apos;t available through online booking platforms.</p>
             </div>
 
             <div className="my-10 grid grid-cols-3 gap-4 border-y border-border py-8">
@@ -47,9 +47,9 @@ export function About() {
               ))}
             </div>
 
-            <button className="border border-primary bg-primary px-8 py-3.5 text-[11px] tracking-[0.24em] text-primary-foreground transition-all duration-300 hover:bg-accent hover:border-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-              LEARN MORE
-            </button>
+            <a href="#services" className="inline-block border border-primary bg-primary px-8 py-3.5 text-[11px] tracking-[0.24em] text-primary-foreground transition-all duration-300 hover:bg-accent hover:border-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              EXPLORE SERVICES
+            </a>
           </div>
         </div>
       </div>

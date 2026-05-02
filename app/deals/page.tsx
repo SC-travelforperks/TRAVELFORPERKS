@@ -25,12 +25,6 @@ export default async function DealsPage() {
               BACK TO HOME
             </Link>
             <div className="max-w-3xl">
-              <p
-                className="mb-4 text-sm tracking-[0.2em] text-accent"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                TRAVEL FOR PERKS
-              </p>
               <h1
                 className="mb-6 text-4xl sm:text-5xl md:text-6xl"
                 style={{ fontFamily: "'Playfair Display', serif" }}

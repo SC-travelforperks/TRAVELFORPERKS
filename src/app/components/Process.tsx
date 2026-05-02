@@ -3,9 +3,9 @@
 import { useInView } from './useInView'
 
 const steps = [
-  { number: '01', title: 'Share Your Idea', description: 'Tell us your dream destination, travel dates, and what makes your perfect trip.' },
-  { number: '02', title: 'We Plan Everything', description: 'We curate a bespoke itinerary with hand-picked hotels, exclusive perks, and every detail handled.' },
-  { number: '03', title: "You Travel in Style", description: 'Arrive knowing everything is taken care of, with 24/7 support throughout your journey.' },
+  { number: '01', title: 'Share Your Vision', description: 'Tell us your destination, travel style, and what a perfect trip looks like for you. The more detail, the better.' },
+  { number: '02', title: 'We Curate Everything', description: 'We design a bespoke itinerary with hand-selected properties, exclusive amenities, and every detail thoughtfully arranged.' },
+  { number: '03', title: 'Travel Without Compromise', description: 'Arrive knowing everything is in order, with a dedicated advisor on hand throughout every stage of your journey.' },
 ]
 
 export function Process() {

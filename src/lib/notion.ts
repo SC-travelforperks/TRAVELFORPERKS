@@ -43,7 +43,7 @@ async function fetchDealsFromNotion(): Promise<Deal[]> {
 
       const props = page.properties as Record<string, unknown>;
       const title = getTitle(props.Name);
-      const image = getUrl(props.Image);
+      const image = getFileUrl(props.Image) || getUrl(props.Image);
       if (!title || !image) continue;
 
       deals.push({
@@ -150,7 +150,7 @@ async function fetchGalleryFromNotion(): Promise<GalleryItem[]> {
 
       const props = page.properties as Record<string, unknown>;
       const title = getTitle(props.Name);
-      const image = getUrl(props.Image);
+      const image = getFileUrl(props.Image) || getUrl(props.Image);
       if (!title || !image) continue;
 
       items.push({
@@ -175,6 +175,181 @@ export const getGallery = unstable_cache(
   { tags: ["gallery"], revalidate: 60 }
 );
 
+// ─── Blogs ────────────────────────────────────────────────────────────────────
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  date: string;
+  image: string;
+  excerpt: string;
+  category: string;
+}
+
+export interface BlogBlock {
+  id: string;
+  type: "paragraph" | "heading_2" | "heading_3";
+  text: string;
+}
+
+async function fetchBlogsFromNotion(): Promise<BlogPost[]> {
+  const dbId = process.env.NOTION_BLOGS_DATABASE_ID;
+  if (!process.env.NOTION_TOKEN || !dbId) return [];
+
+  try {
+    const response = await notion.databases.query({
+      database_id: dbId,
+      filter: { property: "Published", checkbox: { equals: true } },
+      sorts: [{ property: "Date", direction: "descending" }],
+    });
+
+    const posts: BlogPost[] = [];
+
+    for (const item of response.results) {
+      const page = item as PageObjectResponse;
+      if (!("properties" in page)) continue;
+
+      const props = page.properties as Record<string, unknown>;
+      const title = getTitle(props.Title);
+      if (!title) continue;
+
+      const slug = slugify(getRichText(props.Slug) || title);
+      const image = getFileUrl(props.Cover) || getUrl(props.Cover);
+
+      const dateProp = props.Date as { date?: { start?: string } } | null;
+      const rawDate = dateProp?.date?.start ?? "";
+      const date = rawDate
+        ? new Date(rawDate).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "";
+
+      posts.push({
+        id: page.id,
+        slug,
+        title,
+        date,
+        image,
+        excerpt: getRichText(props.Excerpt),
+        category: getSelect(props.Category),
+      });
+    }
+
+    return posts;
+  } catch (err) {
+    console.error("[Notion] Failed to fetch blogs:", err);
+    return [];
+  }
+}
+
+export const getBlogs = unstable_cache(fetchBlogsFromNotion, ["notion-blogs"], {
+  tags: ["blogs"],
+  revalidate: 60,
+});
+
+async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
+  if (!process.env.NOTION_TOKEN) return [];
+
+  try {
+    const response = await notion.blocks.children.list({ block_id: pageId });
+    const blocks: BlogBlock[] = [];
+
+    for (const block of response.results) {
+      const b = block as { id: string; type: string; [key: string]: unknown };
+      const type = b.type as BlogBlock["type"];
+      if (!["paragraph", "heading_2", "heading_3"].includes(type)) continue;
+
+      const content = b[type] as {
+        rich_text?: Array<{ plain_text?: string }>;
+      };
+      const text =
+        content?.rich_text?.map((r) => r.plain_text ?? "").join("") ?? "";
+      if (!text) continue;
+
+      blocks.push({ id: b.id, type, text });
+    }
+
+    return blocks;
+  } catch (err) {
+    console.error("[Notion] Failed to fetch blog blocks:", err);
+    return [];
+  }
+}
+
+export const getBlogBlocks = unstable_cache(
+  fetchBlogBlocksFromNotion,
+  ["notion-blog-blocks"],
+  { tags: ["blogs"], revalidate: 60 }
+);
+
+// ─── Social Posts ─────────────────────────────────────────────────────────────
+
+export type SocialPlatform = "Twitter" | "Instagram" | "YouTube";
+
+export interface SocialPost {
+  id: string;
+  name: string;
+  caption: string;
+  url: string;
+  platform: SocialPlatform;
+}
+
+function detectPlatform(url: string): SocialPlatform | null {
+  if (/twitter\.com|x\.com/i.test(url)) return "Twitter";
+  if (/instagram\.com/i.test(url)) return "Instagram";
+  if (/youtube\.com|youtu\.be/i.test(url)) return "YouTube";
+  return null;
+}
+
+async function fetchSocialFromNotion(): Promise<SocialPost[]> {
+  const dbId = process.env.NOTION_SOCIAL_DATABASE_ID;
+  if (!process.env.NOTION_TOKEN || !dbId) return [];
+
+  try {
+    const response = await notion.databases.query({
+      database_id: dbId,
+      filter: { property: "Active", checkbox: { equals: true } },
+      sorts: [{ property: "Order", direction: "ascending" }],
+    });
+
+    const posts: SocialPost[] = [];
+
+    for (const item of response.results) {
+      const page = item as PageObjectResponse;
+      if (!("properties" in page)) continue;
+
+      const props = page.properties as Record<string, unknown>;
+      const url = getUrl(props["Post URL"]);
+      if (!url) continue;
+
+      const platform = detectPlatform(url);
+      if (!platform) continue;
+
+      posts.push({
+        id: page.id,
+        name: getTitle(props.Title),
+        caption: getRichText(props.Caption),
+        url,
+        platform,
+      });
+    }
+
+    return posts;
+  } catch (err) {
+    console.error("[Notion] Failed to fetch social posts:", err);
+    return [];
+  }
+}
+
+export const getSocialPosts = unstable_cache(
+  fetchSocialFromNotion,
+  ["notion-social"],
+  { tags: ["social"], revalidate: 60 }
+);
+
 // ─── Property helpers ─────────────────────────────────────────────────────────
 
 function getTitle(prop: unknown): string {
@@ -193,6 +368,23 @@ function getUrl(prop: unknown): string {
   if (!prop || typeof prop !== "object") return "";
   const p = prop as { url?: string };
   return p.url ?? "";
+}
+
+function getFileUrl(prop: unknown): string {
+  if (!prop || typeof prop !== "object") return "";
+  // files property: [{type: "external", external: {url}}, ...] or [{type: "file", file: {url}}]
+  const p = prop as {
+    files?: Array<{
+      type?: string;
+      external?: { url?: string };
+      file?: { url?: string };
+    }>;
+  };
+  const first = p.files?.[0];
+  if (!first) return "";
+  if (first.type === "external") return first.external?.url ?? "";
+  if (first.type === "file") return first.file?.url ?? "";
+  return "";
 }
 
 function getSelect(prop: unknown): string {

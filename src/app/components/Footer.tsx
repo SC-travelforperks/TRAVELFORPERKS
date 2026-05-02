@@ -13,17 +13,17 @@ export function Footer({ onPlanClick }: { onPlanClick: () => void }) {
         <div className="mx-auto max-w-4xl px-5 text-center sm:px-6 lg:px-8">
           <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>Start Planning</p>
           <h2 className="mb-6 text-4xl uppercase tracking-[0.04em] sm:text-5xl md:text-6xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-            Your Next Journey Awaits
+            Every Extraordinary<br />Journey Begins Here
           </h2>
           <p className="mx-auto mb-10 max-w-md text-sm leading-7 text-primary-foreground/60 sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-            Tell us where you want to go and we&apos;ll handle every detail.
+            Share your vision and we&apos;ll craft an experience worthy of your time.
           </p>
           <button
             onClick={onPlanClick}
             className="group border border-accent bg-accent px-10 py-4 text-[11px] tracking-[0.26em] text-white transition-all duration-300 hover:bg-transparent hover:text-accent"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            PLAN YOUR TRAVEL
+            BEGIN YOUR JOURNEY
           </button>
         </div>
       </div>
