@@ -42,8 +42,7 @@ export default async function BlogsPage() {
                 className="text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                Destination inspiration, hotel notes, and smarter luxury travel
-                planning guidance gathered in one place.
+                Destination Inspiration, Hotel Reviews, Itineraries, Travel Guides, Blogs and Travel planning Guidance.
               </p>
             </div>
           </div>

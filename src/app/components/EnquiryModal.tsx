@@ -135,8 +135,8 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         <div className="grid max-h-[90vh] overflow-y-auto lg:grid-cols-[0.95fr_1.15fr]">
           <aside className="relative hidden border-r border-primary/10 px-10 py-12 lg:block">
             <p
-              className="mb-4 text-[11px] uppercase tracking-[0.28em] text-accent"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              className="mb-4 text-[13px] uppercase tracking-[0.24em] text-accent sm:text-sm"
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Private Planning
             </p>
@@ -149,7 +149,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             </h2>
             <p
               className="mt-5 max-w-sm text-sm leading-7 text-muted-foreground sm:text-base"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Tell us what you&apos;re dreaming about and we&apos;ll come back with a thoughtful, tailored response that fits your style of travel.
             </p>
@@ -158,7 +158,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               <span className="h-px flex-1 bg-primary/10" />
               <span
                 className="text-[10px] uppercase tracking-[0.24em] text-primary/45"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 What Happens Next
               </span>
@@ -173,7 +173,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                   </div>
                   <p
                     className="text-sm leading-6 text-primary/75"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {step}
                   </p>
@@ -186,7 +186,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 <span
                   key={badge}
                   className="border border-primary/10 bg-background px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-primary/55"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {badge}
                 </span>
@@ -198,7 +198,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             {isSubmitted ? (
               <div
                 className="flex min-h-[340px] flex-col items-start justify-center space-y-5 sm:min-h-[420px]"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <div className="flex h-14 w-14 items-center justify-center border border-accent/25 bg-accent/10 text-accent">
                   <CheckCircle2 size={26} />
@@ -229,7 +229,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                     <span className="h-px w-6 bg-accent/60" />
                     <span
                       className="text-[10px] uppercase tracking-[0.24em] text-accent"
-                      style={{ fontFamily: "'Montserrat', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       Private Planning
                     </span>
@@ -243,7 +243,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                   </h2>
                   <p
                     className="mt-2 text-xs leading-6 text-muted-foreground"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     Share the basics and we&apos;ll come back with a thoughtful, tailored response.
                   </p>
@@ -252,7 +252,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 <div className="mb-6 pr-10 hidden lg:block">
                   <p
                     className="mb-2 text-[11px] uppercase tracking-[0.24em] text-primary/45"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     Travel Enquiry
                   </p>
@@ -267,7 +267,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 <form
                   onSubmit={handleSubmit}
                   className="space-y-4 sm:space-y-5"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   <input
                     type="text"
@@ -315,7 +315,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                   <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <p
                       className="max-w-sm text-[11px] leading-5 text-muted-foreground sm:text-xs sm:leading-6"
-                      style={{ fontFamily: "'Montserrat', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       Prefer a quicker start? Include destination, travel window, and group size and we&apos;ll take it from there.
                     </p>

@@ -1,6 +1,10 @@
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { unstable_cache } from "next/cache";
+import {
+  deals as localDeals,
+  type DealTag,
+} from "@/data/deals";
 
 export function slugify(text: string): string {
   return text
@@ -10,7 +14,10 @@ export function slugify(text: string): string {
     .replace(/\s+/g, "-");
 }
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
+const notion = new Client({
+  auth: process.env.NOTION_TOKEN,
+  fetch: (...args) => fetch(...args),
+});
 
 // ─── Deals ────────────────────────────────────────────────────────────────────
 
@@ -22,6 +29,8 @@ export interface Deal {
   perk: string;
   summary: string;
   image: string;
+  category: string;
+  tags: DealTag[];
 }
 
 async function fetchDealsFromNotion(): Promise<Deal[]> {
@@ -45,15 +54,22 @@ async function fetchDealsFromNotion(): Promise<Deal[]> {
       const title = getTitle(props.Name);
       const image = getFileUrl(props.Image) || getUrl(props.Image);
       if (!title || !image) continue;
+      const slug = slugify(title);
+      const localDeal = localDeals.find((deal) => deal.slug === slug);
 
       deals.push({
         id: page.id,
-        slug: slugify(title),
+        slug,
         title,
         location: getRichText(props.Location),
         perk: getRichText(props.Perk),
         summary: getRichText(props.Summary),
         image,
+        category: getSelect(props.Category) || localDeal?.category || "",
+        tags:
+          (getMultiSelect(props.Tags) as DealTag[]) ||
+          localDeal?.tags ||
+          [],
       });
     }
 
@@ -176,6 +192,53 @@ export const getGallery = unstable_cache(
 );
 
 // ─── Blogs ────────────────────────────────────────────────────────────────────
+
+export interface AboutStat {
+  id: string;
+  key: string;
+  value: string;
+}
+
+async function fetchAboutStatsFromNotion(): Promise<AboutStat[]> {
+  const dbId = process.env.NOTION_ABOUT_STATS_DATABASE_ID;
+  if (!process.env.NOTION_TOKEN || !dbId) return [];
+
+  try {
+    const response = await notion.databases.query({
+      database_id: dbId,
+      page_size: 20,
+    });
+
+    const stats: AboutStat[] = [];
+
+    for (const item of response.results) {
+      const page = item as PageObjectResponse;
+      if (!("properties" in page)) continue;
+
+      const props = page.properties as Record<string, unknown>;
+      const key = getTitle(props.Key);
+      const value = getRichText(props.Value);
+      if (!key || !value) continue;
+
+      stats.push({
+        id: page.id,
+        key,
+        value,
+      });
+    }
+
+    return stats;
+  } catch (err) {
+    console.error("[Notion] Failed to fetch about stats:", err);
+    return [];
+  }
+}
+
+export const getAboutStats = unstable_cache(
+  fetchAboutStatsFromNotion,
+  ["notion-about-stats"],
+  { tags: ["about-stats"], revalidate: 60 }
+);
 
 export interface BlogPost {
   id: string;
@@ -391,4 +454,10 @@ function getSelect(prop: unknown): string {
   if (!prop || typeof prop !== "object") return "";
   const p = prop as { select?: { name?: string } };
   return p.select?.name ?? "";
+}
+
+function getMultiSelect(prop: unknown): string[] {
+  if (!prop || typeof prop !== "object") return [];
+  const p = prop as { multi_select?: Array<{ name?: string }> };
+  return p.multi_select?.map((item) => item.name ?? "").filter(Boolean) ?? [];
 }

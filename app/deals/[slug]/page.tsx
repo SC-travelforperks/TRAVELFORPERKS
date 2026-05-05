@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
+import { DealTagIcon, getDealTagClassName } from "@/app/components/dealTagStyles";
 import { deals, getDealBySlug } from "@/data/deals";
 
 type DealPageProps = {
@@ -43,10 +45,13 @@ export default async function DealDetailPage({ params }: DealPageProps) {
       <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="relative">
           <div className="absolute inset-0">
-            <img
+            <Image
               src={deal.image}
               alt={deal.title}
-              className="h-full w-full object-cover"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-black/45" />
           </div>
@@ -60,6 +65,26 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               BACK TO ALL DEALS
             </Link>
             <div className="max-w-3xl text-white">
+              <div className="mb-4 flex flex-wrap items-center gap-2">
+                {deal.category && (
+                  <span
+                    className="inline-flex border border-white/18 bg-white/12 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    {deal.category}
+                  </span>
+                )}
+                {deal.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className={`inline-flex items-center gap-1.5 border px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] shadow-[0_10px_24px_rgba(0,0,0,0.08)] backdrop-blur-md ${getDealTagClassName(tag)}`}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    <DealTagIcon tag={tag} />
+                    {tag}
+                  </span>
+                ))}
+              </div>
               <p
                 className="mb-4 text-sm tracking-[0.2em] text-white/80"
                 style={{ fontFamily: "'Inter', sans-serif" }}

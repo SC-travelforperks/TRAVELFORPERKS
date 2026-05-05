@@ -26,18 +26,19 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
           <Link
             href="/"
             className={`pr-4 text-xs tracking-[0.28em] sm:text-sm transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}
-            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
+            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             TRAVEL FOR PERKS
           </Link>
 
           <div
             className={`hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}
-            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
+            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             <a href="#about" className="transition-opacity duration-200 hover:opacity-60">About</a>
             <a href="#services" className="transition-opacity duration-200 hover:opacity-60">Services</a>
             <a href="#deals" className="transition-opacity duration-200 hover:opacity-60">Deals</a>
+            <a href="#reviews" className="transition-opacity duration-200 hover:opacity-60">Reviews</a>
             <a href="#gallery" className="transition-opacity duration-200 hover:opacity-60">Gallery</a>
             <a href="#blogs" className="transition-opacity duration-200 hover:opacity-60">Insights</a>
             <a href="#social" className="transition-opacity duration-200 hover:opacity-60">Social</a>
@@ -51,7 +52,7 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
                   ? "bg-primary text-primary-foreground hover:bg-primary/85"
                   : "border border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white hover:text-primary"
               }`}
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               PLAN YOUR TRIP
             </button>
@@ -84,7 +85,7 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
             <div className="mb-8 flex items-center justify-between">
               <span
                 className="text-xs tracking-[0.28em] text-primary"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 MENU
               </span>
@@ -100,11 +101,12 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
 
             <div
               className="flex flex-1 flex-col gap-5 text-sm uppercase tracking-[0.18em] text-primary"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               <a href="#about" onClick={closeMenu} className="border-b border-border pb-3">About</a>
               <a href="#services" onClick={closeMenu} className="border-b border-border pb-3">Services</a>
               <a href="#deals" onClick={closeMenu} className="border-b border-border pb-3">Deals</a>
+              <a href="#reviews" onClick={closeMenu} className="border-b border-border pb-3">Reviews</a>
               <a href="#gallery" onClick={closeMenu} className="border-b border-border pb-3">Gallery</a>
               <a href="#blogs" onClick={closeMenu} className="border-b border-border pb-3">Insights</a>
               <a href="#social" onClick={closeMenu} className="border-b border-border pb-3">Social</a>
@@ -116,7 +118,7 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
                 onPlanClick();
               }}
               className="mt-8 w-full border border-accent bg-accent px-6 py-4 text-[11px] tracking-[0.24em] text-white"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               PLAN YOUR TRIP
             </button>

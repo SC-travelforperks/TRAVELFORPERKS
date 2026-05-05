@@ -14,10 +14,10 @@ export function Blogs({ posts }: { posts: BlogPost[] }) {
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
 
         <div className={`mx-auto mb-16 max-w-2xl text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
-          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>Journal</p>
-          <h2 className="mb-4 text-4xl uppercase tracking-[0.04em] sm:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Latest Insights</h2>
-          <p className="text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-            Destination inspiration, hotel notes, and smarter luxury travel planning guidance.
+          <p className="mb-4 text-[13px] uppercase tracking-[0.24em] text-accent sm:text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>Journal</p>
+          <h2 className="mb-4 text-4xl tracking-[0.01em] sm:text-5xl" style={{ fontFamily: "'Instrument Serif', serif" }}>Latest Insights</h2>
+          <p className="text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Destination Inspiration, Hotel Reviews, Itineraries, Travel Guides, Blogs and Travel planning Guidance.
           </p>
         </div>
 
@@ -33,7 +33,7 @@ export function Blogs({ posts }: { posts: BlogPost[] }) {
           <Link
             href="/blogs"
             className="inline-flex items-center gap-3 border border-primary px-8 py-4 text-[11px] uppercase tracking-[0.22em] text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             VIEW ALL INSIGHTS
             <span className="h-px w-6 bg-current" />

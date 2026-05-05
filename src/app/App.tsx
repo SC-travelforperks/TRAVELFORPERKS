@@ -16,7 +16,7 @@ import { FAQs } from './components/FAQs';
 import { Footer } from './components/Footer';
 import { EnquiryModal } from './components/EnquiryModal';
 import { FloatingContact } from './components/FloatingContact';
-import type { Deal, Review, GalleryItem, BlogPost, SocialPost } from '@/lib/notion';
+import type { Deal, Review, GalleryItem, BlogPost, SocialPost, AboutStat } from '@/lib/notion';
 
 interface AppProps {
   deals: Deal[];
@@ -24,9 +24,10 @@ interface AppProps {
   gallery: GalleryItem[];
   blogs: BlogPost[];
   socialPosts: SocialPost[];
+  aboutStats: AboutStat[];
 }
 
-export default function App({ deals, reviews, gallery, blogs, socialPosts }: AppProps) {
+export default function App({ deals, reviews, gallery, blogs, socialPosts, aboutStats }: AppProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -34,9 +35,9 @@ export default function App({ deals, reviews, gallery, blogs, socialPosts }: App
       <Navigation onPlanClick={() => setIsModalOpen(true)} />
       <Hero onEnquire={() => setIsModalOpen(true)} />
       <TrustBar />
-      <About />
+      <About stats={aboutStats} />
       <Services onEnquire={() => setIsModalOpen(true)} />
-      <Process />
+      <Process onEnquire={() => setIsModalOpen(true)} />
       <Deals deals={deals} />
       <Reviews reviews={reviews} />
       <Gallery galleryItems={gallery} />

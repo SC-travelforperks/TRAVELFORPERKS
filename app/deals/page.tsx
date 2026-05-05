@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DealCard } from "@/app/components/DealCard";
+import { DealsCatalog } from "@/app/components/DealsCatalog";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { getDeals } from "@/lib/notion";
 
@@ -44,11 +44,7 @@ export default async function DealsPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
-            {deals.map((deal, index) => (
-              <DealCard key={deal.slug} deal={deal} priority={index < 2} />
-            ))}
-          </div>
+          <DealsCatalog deals={deals} />
         </section>
       </main>
     </InternalPageShell>

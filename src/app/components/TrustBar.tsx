@@ -1,16 +1,18 @@
+import Image from 'next/image'
+
 const partners = [
-  { name: "Virtuoso",              file: "virtuoso.png" },
-  { name: "Preferred Hotels",      file: "preferred.png" },
-  { name: "Belmond",               file: "belmond.png" },
-  { name: "Four Seasons",          file: "four-seasons.png" },
-  { name: "Rosewood",              file: "rosewood.png" },
-  { name: "Mandarin Oriental",     file: "mandarin-oriental.png" },
-  { name: "Aman",                  file: "aman.png" },
-  { name: "Raffles",               file: "raffles.png" },
-  { name: "Ritz-Carlton",          file: "ritz-carlton.png" },
-  { name: "Six Senses",            file: "six-senses.png" },
-  { name: "Orient Express",        file: "orient-express.png" },
-  { name: "Dorchester",            file: "dorchester.png" },
+  { name: "Virtuoso",              file: "virtuoso.svg", widthClass: "w-24 sm:w-28" },
+  { name: "Preferred Hotels",      file: "preferred.png", widthClass: "w-22 sm:w-26" },
+  { name: "Belmond",               file: "belmond.svg", widthClass: "w-28 sm:w-32" },
+  { name: "Four Seasons",          file: "four-seasons.png", widthClass: "w-24 sm:w-28" },
+  { name: "Rosewood",              file: "rosewood.svg", widthClass: "w-32 sm:w-36" },
+  { name: "Mandarin Oriental",     file: "mandarin-oriental.png", widthClass: "w-30 sm:w-34" },
+  { name: "Aman",                  file: "aman.svg", widthClass: "w-20 sm:w-24" },
+  { name: "Raffles",               file: "raffles.svg", widthClass: "w-22 sm:w-26" },
+  { name: "Ritz-Carlton",          file: "ritz-carlton.png", widthClass: "w-28 sm:w-32" },
+  { name: "Six Senses",            file: "six-senses.png", widthClass: "w-26 sm:w-30" },
+  { name: "Orient Express",        file: "orient-express.svg", widthClass: "w-30 sm:w-34" },
+  { name: "Dorchester",            file: "dorchester.png", widthClass: "w-30 sm:w-34" },
 ];
 
 export function TrustBar() {
@@ -36,10 +38,13 @@ export function TrustBar() {
       <div className="marquee-track">
         {track.map((partner, i) => (
           <div key={i} className="flex items-center justify-center px-8 sm:px-12">
-            <div className="w-24 h-8 sm:w-28 sm:h-9 flex items-center justify-center">
-              <img
-                src={`/partners/${partner.file}`}
+            <div className={`${partner.widthClass} h-8 sm:h-9 flex items-center justify-center`}>
+              <Image
+                src={`/partners-official/${partner.file}`}
                 alt={partner.name}
+                width={112}
+                height={36}
+                sizes="112px"
                 className="max-w-full max-h-full w-auto h-auto object-contain brightness-0 invert opacity-80"
               />
             </div>

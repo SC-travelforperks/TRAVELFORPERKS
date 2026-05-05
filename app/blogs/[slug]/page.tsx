@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { getBlogs, getBlogBlocks } from "@/lib/notion";
@@ -48,7 +49,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
                 <Link
                   href="/blogs"
                   className="mb-8 inline-block text-sm tracking-[0.18em] text-muted-foreground hover:text-accent"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   BACK TO ALL INSIGHTS
                 </Link>
@@ -56,7 +57,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
                 {(post.category || post.date) && (
                   <p
                     className="mb-4 text-[11px] uppercase tracking-[0.24em] text-accent"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {[post.category, post.date].filter(Boolean).join(" · ")}
                   </p>
@@ -72,7 +73,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
                 {post.excerpt && (
                   <p
                     className="max-w-lg text-sm leading-8 text-muted-foreground sm:text-base"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {post.excerpt}
                   </p>
@@ -86,10 +87,13 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
                     {/* Decorative offset border behind */}
                     <div className="absolute inset-0 translate-x-3 translate-y-3 border border-accent/30" />
                     <div className="relative overflow-hidden border border-border bg-secondary/20 shadow-2xl">
-                      <img
+                      <Image
                         src={post.image}
                         alt={post.title}
-                        className="block w-full object-contain"
+                        width={1200}
+                        height={900}
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="block h-auto w-full object-contain"
                         style={{ maxHeight: "480px" }}
                       />
                     </div>
@@ -136,7 +140,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
                 <p
                   key={block.id}
                   className="text-sm leading-8 text-muted-foreground sm:text-base"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {block.text}
                 </p>

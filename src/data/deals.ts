@@ -1,3 +1,14 @@
+export const dealTags = [
+  "Limited Slots",
+  "New",
+  "Ending Soon",
+  "Featured",
+  "Hot Deal",
+] as const;
+
+export type DealCategory = string;
+export type DealTag = (typeof dealTags)[number];
+
 export type Deal = {
   slug: string;
   image: string;
@@ -9,6 +20,8 @@ export type Deal = {
   validThrough: string;
   idealFor: string;
   startingFrom: string;
+  category: DealCategory;
+  tags: DealTag[];
   highlights: string[];
   inclusions: string[];
 };
@@ -28,6 +41,8 @@ export const deals: Deal[] = [
     validThrough: "September 30, 2026",
     idealFor: "Couples, milestone celebrations, and stylish summer escapes",
     startingFrom: "$8,900",
+    category: "Cruises",
+    tags: ["Featured", "Hot Deal"],
     highlights: [
       "Private yacht day with a custom island route",
       "Preferred check-in and room upgrade priority",
@@ -50,10 +65,12 @@ export const deals: Deal[] = [
     summary:
       "A mountain-forward retreat pairing panoramic suites, wellness rituals, and refined alpine hospitality.",
     overview:
-      "This Swiss Alps offer is designed for travelers who want a restorative luxury base with easy access to scenic rail journeys, private guides, and elevated après-ski or summer hiking moments.",
+      "This Swiss Alps offer is designed for travelers who want a restorative luxury base with easy access to scenic rail journeys, private guides, and elevated apres-ski or summer hiking moments.",
     validThrough: "December 15, 2026",
     idealFor: "Winter holidays, honeymooners, and wellness-focused travelers",
     startingFrom: "$6,400",
+    category: "Hotels",
+    tags: ["Featured", "Limited Slots"],
     highlights: [
       "Upgrade priority into a panoramic suite category",
       "Spa access with curated wellness recommendations",
@@ -80,6 +97,8 @@ export const deals: Deal[] = [
     validThrough: "October 31, 2026",
     idealFor: "Anniversaries, babymoons, and first-time Italy splurges",
     startingFrom: "$5,750",
+    category: "Packages",
+    tags: ["New", "Featured"],
     highlights: [
       "Resort credit for dining or wellness experiences",
       "Signature spa treatment included once per stay",
@@ -106,6 +125,8 @@ export const deals: Deal[] = [
     validThrough: "November 20, 2026",
     idealFor: "Honeymoons and no-compromise beach escapes",
     startingFrom: "$9,850",
+    category: "Hotels",
+    tags: ["Hot Deal", "Limited Slots"],
     highlights: [
       "Overwater villa upgrade priority",
       "Complimentary sunset cruise for two",
@@ -132,6 +153,8 @@ export const deals: Deal[] = [
     validThrough: "June 30, 2026",
     idealFor: "Culture seekers and shoulder-season Japan itineraries",
     startingFrom: "$4,980",
+    category: "Activities",
+    tags: ["New"],
     highlights: [
       "One kaiseki dinner experience included",
       "Private guide credit for custom touring",
@@ -158,6 +181,8 @@ export const deals: Deal[] = [
     validThrough: "August 31, 2026",
     idealFor: "Bucket-list trips and celebratory long-haul travel",
     startingFrom: "$11,200",
+    category: "Exclusives",
+    tags: ["Ending Soon", "Featured"],
     highlights: [
       "Air credit toward select bush transfers",
       "Private premium tasting in the Winelands",

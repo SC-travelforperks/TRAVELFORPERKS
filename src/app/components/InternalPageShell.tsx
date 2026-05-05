@@ -30,40 +30,43 @@ export function InternalPageShell({
           <Link
             href="/"
             className="pr-4 text-xs tracking-[0.28em] text-primary sm:text-sm"
-            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
+            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             TRAVEL FOR PERKS
           </Link>
 
           <nav
             className="hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] text-primary lg:flex"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            <Link href="/#about" className="transition-opacity hover:opacity-70">
+            <a href="/#about" className="transition-opacity hover:opacity-70">
               About
-            </Link>
-            <Link href="/#services" className="transition-opacity hover:opacity-70">
+            </a>
+            <a href="/#services" className="transition-opacity hover:opacity-70">
               Services
-            </Link>
+            </a>
             <Link href="/deals" className="transition-opacity hover:opacity-70">
               Deals
             </Link>
+            <a href="/#reviews" className="transition-opacity hover:opacity-70">
+              Reviews
+            </a>
             <Link href="/gallery" className="transition-opacity hover:opacity-70">
               Gallery
             </Link>
             <Link href="/blogs" className="transition-opacity hover:opacity-70">
               Insights
             </Link>
-            <Link href="/#social" className="transition-opacity hover:opacity-70">
+            <a href="/#social" className="transition-opacity hover:opacity-70">
               Social
-            </Link>
+            </a>
           </nav>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsModalOpen(true)}
               className="hidden border border-accent bg-accent px-5 py-2.5 text-[11px] tracking-[0.22em] text-white transition-all hover:opacity-90 sm:inline-flex"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               PLAN YOUR TRIP
             </button>
@@ -91,7 +94,7 @@ export function InternalPageShell({
             <div className="mb-8 flex items-center justify-between">
               <span
                 className="text-xs tracking-[0.28em] text-primary"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 MENU
               </span>
@@ -107,14 +110,15 @@ export function InternalPageShell({
 
             <div
               className="flex flex-1 flex-col gap-5 text-sm uppercase tracking-[0.18em] text-primary"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
-              <Link href="/#about" onClick={closeMenu} className="border-b border-border pb-3">About</Link>
-              <Link href="/#services" onClick={closeMenu} className="border-b border-border pb-3">Services</Link>
+              <a href="/#about" onClick={closeMenu} className="border-b border-border pb-3">About</a>
+              <a href="/#services" onClick={closeMenu} className="border-b border-border pb-3">Services</a>
               <Link href="/deals" onClick={closeMenu} className="border-b border-border pb-3">Deals</Link>
+              <a href="/#reviews" onClick={closeMenu} className="border-b border-border pb-3">Reviews</a>
               <Link href="/gallery" onClick={closeMenu} className="border-b border-border pb-3">Gallery</Link>
               <Link href="/blogs" onClick={closeMenu} className="border-b border-border pb-3">Insights</Link>
-              <Link href="/#social" onClick={closeMenu} className="border-b border-border pb-3">Social</Link>
+              <a href="/#social" onClick={closeMenu} className="border-b border-border pb-3">Social</a>
             </div>
 
             <button
@@ -123,7 +127,7 @@ export function InternalPageShell({
                 setIsModalOpen(true);
               }}
               className="mt-8 w-full border border-accent bg-accent px-6 py-4 text-[11px] tracking-[0.24em] text-white"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               PLAN YOUR TRIP
             </button>

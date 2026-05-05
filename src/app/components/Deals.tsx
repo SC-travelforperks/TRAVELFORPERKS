@@ -13,9 +13,9 @@ export function Deals({ deals }: { deals: Deal[] }) {
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
 
         <div className={`mx-auto mb-16 max-w-2xl text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
-          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-accent" style={{ fontFamily: "'Montserrat', sans-serif" }}>Exclusive Offers</p>
-          <h2 className="mb-4 text-4xl uppercase tracking-[0.04em] sm:text-5xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Curated Deals & Perks</h2>
-          <p className="text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+          <p className="mb-4 text-[13px] uppercase tracking-[0.24em] text-accent sm:text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>Exclusive Offers</p>
+          <h2 className="mb-4 text-4xl tracking-[0.01em] sm:text-5xl" style={{ fontFamily: "'Instrument Serif', serif" }}>Curated Deals & Perks</h2>
+          <p className="text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
             Added value and VIP treatment at the world's finest properties — exclusive to our clients.
           </p>
         </div>
@@ -36,7 +36,7 @@ export function Deals({ deals }: { deals: Deal[] }) {
           <Link
             href="/deals"
             className="inline-flex items-center gap-3 border border-primary px-8 py-4 text-[11px] uppercase tracking-[0.22em] text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             VIEW ALL DEALS
             <span className="h-px w-6 bg-current" />
