@@ -26,12 +26,10 @@ export function InternalPageShell({
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="mx-auto grid h-full max-w-7xl grid-cols-[220px_1fr_auto] items-center">
-          <div className="flex items-center">
-            <Link href="/" className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Travel for Perks
-            </Link>
-          </div>
+        <div className="mx-auto flex h-full max-w-7xl items-center justify-between">
+          <Link href="/" className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Travel for Perks
+          </Link>
 
           <nav
             className="hidden items-center justify-center gap-6 text-[11px] uppercase tracking-[0.22em] text-primary lg:flex"

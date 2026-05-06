@@ -22,12 +22,10 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto grid h-full max-w-7xl grid-cols-[220px_1fr_auto] items-center">
-          <div className="flex items-center">
-            <Link href="/" className={`text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`} style={{ fontFamily: "'Inter', sans-serif" }}>
-              Travel for Perks
-            </Link>
-          </div>
+        <div className="mx-auto flex h-full max-w-7xl items-center justify-between">
+          <Link href="/" className={`text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`} style={{ fontFamily: "'Inter', sans-serif" }}>
+            Travel for Perks
+          </Link>
 
           <div
             className={`hidden items-center justify-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}
