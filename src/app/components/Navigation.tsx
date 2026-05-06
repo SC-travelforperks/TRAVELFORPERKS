@@ -1,7 +1,6 @@
 'use client'
 
 import Link from "next/link";
-import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useScrollHeaderVisibility } from "./useScrollHeaderVisibility";
@@ -24,19 +23,9 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
         }`}
       >
         <div className="mx-auto grid h-full max-w-7xl grid-cols-[220px_1fr_auto] items-center">
-          <div className="relative h-full">
-            <Link href="/" className={`absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-0 transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}>
-              <Image
-                src="/travel_for_perks_logo_transparent.png"
-                alt="Travel for Perks"
-                width={224}
-                height={197}
-                className={`h-28 w-28 object-contain transition-all duration-300 ${isScrolled ? "" : "brightness-0 invert"}`}
-                priority
-              />
-              <span className="hidden whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] lg:block" style={{ fontFamily: "'Inter', sans-serif" }}>
-                Travel for Perks
-              </span>
+          <div className="flex items-center">
+            <Link href="/" className={`text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`} style={{ fontFamily: "'Inter', sans-serif" }}>
+              Travel for Perks
             </Link>
           </div>
 

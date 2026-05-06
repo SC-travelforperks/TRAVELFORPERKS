@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useInView } from './useInView'
 import { XIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon } from './icons'
 
@@ -43,14 +42,9 @@ export function Footer({ onPlanClick }: { onPlanClick: () => void }) {
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div className="mb-12 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
             <div className="sm:col-span-2 md:col-span-1">
-              <Image
-                src="/travel_for_perks_logo_transparent.png"
-                alt="Travel for Perks"
-                width={224}
-                height={197}
-                className="mb-1 h-36 w-36 object-contain brightness-0 invert"
-              />
-
+              <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-primary-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+                Travel for Perks
+              </p>
               <p className="mb-4 text-sm text-primary-foreground/60" style={{ fontFamily: "'Inter', sans-serif" }}>
                 Powered by{' '}
                 <a

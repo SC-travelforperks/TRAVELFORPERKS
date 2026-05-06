@@ -1,7 +1,6 @@
 'use client'
 
 import Link from "next/link";
-import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Footer } from "./Footer";
@@ -28,18 +27,9 @@ export function InternalPageShell({
         }`}
       >
         <div className="mx-auto grid h-full max-w-7xl grid-cols-[220px_1fr_auto] items-center">
-          <div className="relative h-full">
-            <Link href="/" className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-0 text-primary">
-              <Image
-                src="/travel_for_perks_logo_transparent.png"
-                alt="Travel for Perks"
-                width={224}
-                height={197}
-                className="h-28 w-28 object-contain"
-              />
-              <span className="hidden whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] lg:block" style={{ fontFamily: "'Inter', sans-serif" }}>
-                Travel for Perks
-              </span>
+          <div className="flex items-center">
+            <Link href="/" className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Travel for Perks
             </Link>
           </div>
 
@@ -100,13 +90,9 @@ export function InternalPageShell({
           />
           <div className="absolute right-0 top-0 flex h-full w-[86vw] max-w-sm flex-col bg-card px-6 py-6 shadow-2xl">
             <div className="mb-8 flex items-center justify-between">
-              <Image
-                src="/travel_for_perks_logo_transparent.png"
-                alt="Travel for Perks"
-                width={224}
-                height={197}
-                className="h-8 w-auto object-contain"
-              />
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>
+                Travel for Perks
+              </span>
               <button
                 type="button"
                 onClick={closeMenu}
