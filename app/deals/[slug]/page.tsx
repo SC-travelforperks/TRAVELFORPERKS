@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft, MapPin } from "lucide-react";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
-import { DealTagIcon, getDealTagClassName } from "@/app/components/dealTagStyles";
-import { deals, getDealBySlug } from "@/data/deals";
+import { NotionRichContent, getBlocksPlainText } from "@/app/components/NotionRichContent";
+import {
+  DealBadgeIcon,
+  DealTypeIcon,
+  dealTypeLabels,
+  getDealBadgeClassName,
+} from "@/app/components/dealTagStyles";
+import { getDealBlocks, getDealBySlug, getDeals } from "@/lib/notion";
 
 type DealPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
+  const deals = await getDeals();
   return deals.map((deal) => ({ slug: deal.slug }));
 }
 
@@ -18,7 +26,7 @@ export async function generateMetadata({
   params,
 }: DealPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const deal = getDealBySlug(slug);
+  const deal = await getDealBySlug(slug);
 
   if (!deal) {
     return {
@@ -26,24 +34,35 @@ export async function generateMetadata({
     };
   }
 
+  const blocks = await getDealBlocks(deal.id);
+  const plainText = getBlocksPlainText(blocks);
+  const description = plainText || deal.tagline;
+  const priceLine =
+    deal.price > 0
+      ? ` Starting from ₹${deal.price.toLocaleString("en-IN")}.`
+      : "";
+
   return {
     title: `${deal.title} | Travel For Perks`,
-    description: `${deal.location}. ${deal.perk}. ${deal.summary}`,
+    description: `${deal.location}. ${description}${priceLine}`,
   };
 }
 
 export default async function DealDetailPage({ params }: DealPageProps) {
   const { slug } = await params;
-  const deal = getDealBySlug(slug);
+  const deal = await getDealBySlug(slug);
 
   if (!deal) {
     notFound();
   }
 
+  const blocks = await getDealBlocks(deal.id);
+  const hasRichContent = blocks.length > 0;
+
   return (
     <InternalPageShell>
       <main className="min-h-screen bg-background pb-20 sm:pb-24">
-        <section className="relative">
+        <section className="relative overflow-hidden">
           <div className="absolute inset-0">
             <Image
               src={deal.image}
@@ -53,179 +72,166 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-black/45" />
+            <div className="absolute inset-0 bg-black/50" />
           </div>
 
-          <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-6 md:py-24 lg:px-8 lg:py-32">
+          <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-6 md:py-24 lg:px-8 lg:py-28">
             <Link
               href="/deals"
-              className="mb-8 inline-block text-sm tracking-[0.18em] text-white/80 hover:text-white"
+              className="mb-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/80 transition-colors hover:text-white"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
-              BACK TO ALL DEALS
+              <ArrowLeft className="h-4 w-4" />
+              Back to deals
             </Link>
+
             <div className="max-w-3xl text-white">
-              <div className="mb-4 flex flex-wrap items-center gap-2">
-                {deal.category && (
+              <div className="mb-5 flex flex-wrap items-center gap-2">
+                {deal.type && (
                   <span
-                    className="inline-flex border border-white/18 bg-white/12 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm"
+                    className="inline-flex items-center gap-1.5 bg-white/92 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-primary shadow-[0_10px_24px_rgba(0,0,0,0.08)] backdrop-blur-sm"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
-                    {deal.category}
+                    <DealTypeIcon type={deal.type} />
+                    {dealTypeLabels[deal.type] ?? deal.type}
                   </span>
                 )}
-                {deal.tags.map((tag) => (
+
+                {deal.badge && (
                   <span
-                    key={tag}
-                    className={`inline-flex items-center gap-1.5 border px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] shadow-[0_10px_24px_rgba(0,0,0,0.08)] backdrop-blur-md ${getDealTagClassName(tag)}`}
+                    className={`inline-flex items-center gap-1.5 border px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] shadow-[0_10px_24px_rgba(0,0,0,0.08)] backdrop-blur-md ${getDealBadgeClassName(deal.badge)}`}
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
-                    <DealTagIcon tag={tag} />
-                    {tag}
+                    <DealBadgeIcon badge={deal.badge} />
+                    {deal.badge}
                   </span>
-                ))}
+                )}
               </div>
-              <p
-                className="mb-4 text-sm tracking-[0.2em] text-white/80"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                {deal.location}
-              </p>
+
+              {deal.location && (
+                <p
+                  className="mb-4 inline-flex items-center gap-1.5 text-sm tracking-[0.18em] text-white/80"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  <MapPin className="h-4 w-4" />
+                  {deal.location}
+                </p>
+              )}
+
               <h1
                 className="mb-5 text-4xl sm:text-5xl md:text-6xl"
-                style={{ fontFamily: "'Playfair Display', serif" }}
+                style={{ fontFamily: "'Instrument Serif', serif" }}
               >
                 {deal.title}
               </h1>
-              <p
-                className="mb-6 text-base leading-7 text-white/85 sm:text-lg sm:leading-8"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                {deal.overview}
-              </p>
-              <div
-                className="inline-flex border border-white/30 bg-white/10 px-5 py-3 text-sm tracking-[0.14em] backdrop-blur-sm"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                {deal.perk}
-              </div>
             </div>
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.2fr_0.8fr] lg:px-8 lg:gap-12">
+        <section className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:gap-12">
           <div>
             <h2
               className="mb-5 text-2xl sm:text-3xl"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              Why This Deal Stands Out
+              About This Offer
             </h2>
-            <p
-              className="mb-10 max-w-2xl text-base leading-8 text-muted-foreground"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              {deal.summary}
-            </p>
-
-            <div className="grid gap-8 md:grid-cols-2 lg:gap-10">
-              <div>
-                <h3
-                  className="mb-4 text-xl"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  Highlights
-                </h3>
-                <ul
-                  className="space-y-4 text-muted-foreground"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {deal.highlights.map((item) => (
-                    <li key={item} className="border-b border-border pb-4">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h3
-                  className="mb-4 text-xl"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  Inclusions
-                </h3>
-                <ul
-                  className="space-y-4 text-muted-foreground"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {deal.inclusions.map((item) => (
-                    <li key={item} className="border-b border-border pb-4">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <aside className="h-fit border border-border bg-white p-6 sm:p-8">
-            <p
-              className="mb-3 text-sm tracking-[0.18em] text-accent"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              OFFER SNAPSHOT
-            </p>
-            <div className="space-y-6">
-              <div>
-                <p
-                  className="mb-2 text-xs tracking-[0.18em] text-muted-foreground"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  STARTING FROM
-                </p>
-                <p
-                  className="text-3xl"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  {deal.startingFrom}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="mb-2 text-xs tracking-[0.18em] text-muted-foreground"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  IDEAL FOR
-                </p>
-                <p
-                  className="text-sm leading-7 text-muted-foreground"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {deal.idealFor}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="mb-2 text-xs tracking-[0.18em] text-muted-foreground"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  BOOK BY
-                </p>
-                <p
-                  className="text-sm leading-7 text-muted-foreground"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {deal.validThrough}
-                </p>
-              </div>
-              <Link
-                href="/#contact"
-                className="inline-flex w-full items-center justify-center bg-accent px-6 py-4 text-sm tracking-[0.18em] text-accent-foreground transition-opacity hover:opacity-90"
+            {hasRichContent ? (
+              <NotionRichContent blocks={blocks} titleFallback={deal.title} />
+            ) : (
+              <div
+                className="space-y-4 text-base leading-8 text-muted-foreground"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                PLAN THIS TRIP
-              </Link>
+                {deal.tagline
+                  .split("\n")
+                  .filter(Boolean)
+                  .map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
+              </div>
+            )}
+          </div>
+
+          <aside className="h-fit border border-border bg-card p-6 sm:p-8">
+            <p
+              className="mb-3 text-[13px] uppercase tracking-[0.24em] text-accent"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Offer Snapshot
+            </p>
+            <div className="space-y-6">
+              {deal.type && (
+                <div>
+                  <p
+                    className="mb-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Type
+                  </p>
+                  <p
+                    className="inline-flex items-center gap-2 text-base text-primary"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    <DealTypeIcon type={deal.type} />
+                    {dealTypeLabels[deal.type] ?? deal.type}
+                  </p>
+                </div>
+              )}
+
+              <div>
+                <p
+                  className="mb-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Starting from
+                </p>
+                <p
+                  className="text-3xl text-primary"
+                  style={{ fontFamily: "'Instrument Serif', serif" }}
+                >
+                  {deal.price > 0 ? `₹${deal.price.toLocaleString("en-IN")}` : "On request"}
+                </p>
+              </div>
+
+              {deal.badge && (
+                <div>
+                  <p
+                    className="mb-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Status
+                  </p>
+                  <span
+                    className={`inline-flex items-center gap-1.5 border px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] ${getDealBadgeClassName(deal.badge)}`}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    <DealBadgeIcon badge={deal.badge} />
+                    {deal.badge}
+                  </span>
+                </div>
+              )}
+
+              <div className="space-y-3 pt-2">
+                <a
+                  href={`https://wa.me/919899889476?text=${encodeURIComponent(
+                    `Hi Travel For Perks, I'm interested in the "${deal.title}" offer. Please share more details.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center bg-accent px-6 py-4 text-[11px] uppercase tracking-[0.18em] text-accent-foreground transition-opacity hover:opacity-90"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Enquire on WhatsApp
+                </a>
+                <Link
+                  href="/contact-us"
+                  className="inline-flex w-full items-center justify-center border border-primary px-6 py-4 text-[11px] uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Contact us
+                </Link>
+              </div>
             </div>
           </aside>
         </section>

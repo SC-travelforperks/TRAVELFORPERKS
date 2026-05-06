@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Footer } from "./Footer";
@@ -22,22 +23,29 @@ export function InternalPageShell({
   return (
     <div className="min-h-screen bg-background">
       <header
-        className={`sticky top-0 z-40 border-b border-border bg-background/95 shadow-sm backdrop-blur-sm transition-transform duration-300 ${
+        className={`sticky top-0 z-40 h-16 border-b border-border bg-background/95 shadow-sm backdrop-blur-sm transition-transform duration-300 px-5 sm:px-6 lg:px-8 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-6 lg:px-8 lg:py-5">
-          <Link
-            href="/"
-            className="pr-4 text-xs tracking-[0.28em] text-primary sm:text-sm"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-          >
-            TRAVEL FOR PERKS
-          </Link>
+        <div className="mx-auto grid h-full max-w-7xl grid-cols-[220px_1fr_auto] items-center">
+          <div className="relative h-full">
+            <Link href="/" className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-0 text-primary">
+              <Image
+                src="/travel_for_perks_logo_transparent.png"
+                alt="Travel for Perks"
+                width={224}
+                height={197}
+                className="h-28 w-28 object-contain"
+              />
+              <span className="hidden whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] lg:block" style={{ fontFamily: "'Inter', sans-serif" }}>
+                Travel for Perks
+              </span>
+            </Link>
+          </div>
 
           <nav
-            className="hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] text-primary lg:flex"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="hidden items-center justify-center gap-6 text-[11px] uppercase tracking-[0.22em] text-primary lg:flex"
+            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             <a href="/#about" className="transition-opacity hover:opacity-70">
               About
@@ -92,12 +100,13 @@ export function InternalPageShell({
           />
           <div className="absolute right-0 top-0 flex h-full w-[86vw] max-w-sm flex-col bg-card px-6 py-6 shadow-2xl">
             <div className="mb-8 flex items-center justify-between">
-              <span
-                className="text-xs tracking-[0.28em] text-primary"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                MENU
-              </span>
+              <Image
+                src="/travel_for_perks_logo_transparent.png"
+                alt="Travel for Perks"
+                width={224}
+                height={197}
+                className="h-8 w-auto object-contain"
+              />
               <button
                 type="button"
                 onClick={closeMenu}

@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { CheckCircle2, Clock3, PhoneCall, X } from "lucide-react";
 import { toast } from "sonner";
 
+const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919899889476";
+const whatsappHref = `https://wa.me/${whatsappNumber}`;
+
 const initialForm = {
   name: "",
   email: "",
@@ -327,6 +330,22 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       {isSubmitting ? "SENDING..." : "SUBMIT ENQUIRY"}
                     </button>
                   </div>
+
+                  <p
+                    className="text-center text-[11px] leading-5 text-muted-foreground sm:text-xs sm:leading-6"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Or reach us on{" "}
+                    <a
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent underline underline-offset-4 transition-colors hover:text-primary"
+                    >
+                      WhatsApp
+                    </a>{" "}
+                    for a quicker response.
+                  </p>
                 </form>
               </>
             )}

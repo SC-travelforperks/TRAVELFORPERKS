@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useScrollHeaderVisibility } from "./useScrollHeaderVisibility";
@@ -14,7 +15,7 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
   return (
     <>
       <nav
-        className={`fixed left-0 right-0 top-0 z-50 px-5 py-4 transition-transform duration-300 sm:px-6 lg:px-8 lg:py-5 ${
+        className={`fixed left-0 right-0 top-0 z-50 h-16 px-5 transition-transform duration-300 sm:px-6 lg:px-8 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
           isScrolled
@@ -22,17 +23,25 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <Link
-            href="/"
-            className={`pr-4 text-xs tracking-[0.28em] sm:text-sm transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-          >
-            TRAVEL FOR PERKS
-          </Link>
+        <div className="mx-auto grid h-full max-w-7xl grid-cols-[220px_1fr_auto] items-center">
+          <div className="relative h-full">
+            <Link href="/" className={`absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-0 transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}>
+              <Image
+                src="/travel_for_perks_logo_transparent.png"
+                alt="Travel for Perks"
+                width={224}
+                height={197}
+                className={`h-28 w-28 object-contain transition-all duration-300 ${isScrolled ? "" : "brightness-0 invert"}`}
+                priority
+              />
+              <span className="hidden whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] lg:block" style={{ fontFamily: "'Inter', sans-serif" }}>
+                Travel for Perks
+              </span>
+            </Link>
+          </div>
 
           <div
-            className={`hidden items-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}
+            className={`hidden items-center justify-center gap-6 text-[11px] uppercase tracking-[0.22em] lg:flex transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`}
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             <a href="#about" className="transition-opacity duration-200 hover:opacity-60">About</a>

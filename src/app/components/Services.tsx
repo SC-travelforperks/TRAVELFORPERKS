@@ -61,7 +61,10 @@ export function Services({ onEnquire }: { onEnquire: () => void }) {
     <section id="services" ref={ref as React.RefObject<HTMLElement>} className="bg-secondary/30 py-20 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div className={`mx-auto mb-16 max-w-2xl text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
-          <p className="mb-4 text-[13px] uppercase tracking-[0.24em] text-accent sm:text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>Signature Services</p>
+          <p className="mb-3 text-[13px] uppercase tracking-[0.24em] text-accent sm:text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>Signature Services</p>
+          <div className="mx-auto mb-5 w-10 overflow-hidden">
+            <div className={`h-px bg-accent ${inView ? 'line-grow d-300' : 'opacity-0'}`} />
+          </div>
           <h2 className="mb-4 text-4xl tracking-[0.01em] sm:text-5xl" style={{ fontFamily: "'Instrument Serif', serif" }}>
             Planning Designed Around How You Travel
           </h2>

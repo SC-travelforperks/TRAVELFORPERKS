@@ -19,7 +19,7 @@ export function TrustBar() {
   const track = [...partners, ...partners];
 
   return (
-    <section className="bg-primary py-6 sm:py-8 overflow-hidden">
+    <section className="fade-in d-200 bg-primary py-6 sm:py-8 overflow-hidden">
       <style>{`
         @keyframes marquee {
           0%   { transform: translateX(0); }

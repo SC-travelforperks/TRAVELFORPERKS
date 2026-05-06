@@ -16,7 +16,10 @@ export function Process({ onEnquire }: { onEnquire: () => void }) {
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
 
         <div className={`mx-auto mb-16 max-w-2xl text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
-          <p className="mb-4 text-[13px] uppercase tracking-[0.24em] text-accent sm:text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>How We Work</p>
+          <p className="mb-3 text-[13px] uppercase tracking-[0.24em] text-accent sm:text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>How We Work</p>
+          <div className="mx-auto mb-5 w-10 overflow-hidden">
+            <div className={`h-px bg-accent ${inView ? 'line-grow d-300' : 'opacity-0'}`} />
+          </div>
           <h2 className="text-4xl tracking-[0.01em] text-primary-foreground sm:text-5xl" style={{ fontFamily: "'Instrument Serif', serif" }}>
             The Process Flow
           </h2>
@@ -27,7 +30,7 @@ export function Process({ onEnquire }: { onEnquire: () => void }) {
 
         <div className="relative grid gap-12 md:grid-cols-3 md:gap-8">
           {/* connecting line desktop */}
-          <div className="absolute left-0 right-0 top-10 hidden h-px bg-primary-foreground/10 md:block" />
+          <div className={`absolute left-0 top-10 hidden h-px md:block bg-primary-foreground/10 ${inView ? 'line-grow d-200' : 'opacity-0'}`} />
 
           {steps.map((step, index) => (
             <div

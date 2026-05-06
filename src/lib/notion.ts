@@ -1,10 +1,11 @@
+import { cache } from "react";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { unstable_cache } from "next/cache";
-import {
-  deals as localDeals,
-  type DealTag,
-} from "@/data/deals";
+
+export type DealType = string;
+
+export type DealBadge = string;
 
 export function slugify(text: string): string {
   return text
@@ -19,29 +20,102 @@ const notion = new Client({
   fetch: (...args) => fetch(...args),
 });
 
+async function queryNotionCollection(args: {
+  database_id: string;
+  filter?: unknown;
+  sorts?: unknown[];
+  page_size?: number;
+}) {
+  if (!process.env.NOTION_TOKEN) {
+    throw new Error("NOTION_TOKEN missing");
+  }
+
+  const response = await fetch(
+    `https://api.notion.com/v1/databases/${args.database_id}/query`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
+        "Notion-Version": "2022-06-28",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        filter: args.filter,
+        sorts: args.sorts,
+        page_size: args.page_size,
+      }),
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(body || `Notion query failed with ${response.status}`);
+  }
+
+  return (await response.json()) as { results: unknown[] };
+}
+
+async function reorderByNotionView<T extends { id: string }>(
+  items: T[],
+  viewId?: string
+): Promise<T[]> {
+  if (!viewId || items.length === 0) return items;
+
+  try {
+    const notionWithViews = notion as Client & {
+      views?: {
+        queries?: {
+          create: (args: {
+            view_id: string;
+            page_size: number;
+          }) => Promise<{ results: Array<{ id: string }> }>;
+        };
+      };
+    };
+
+    const viewQuery = await notionWithViews.views?.queries?.create({
+      view_id: viewId,
+      page_size: 100,
+    });
+
+    if (!viewQuery?.results?.length) return items;
+
+    const indexMap = new Map(viewQuery.results.map((result, index) => [result.id, index]));
+
+    return [...items].sort((a, b) => {
+      const aIndex = indexMap.get(a.id) ?? Number.POSITIVE_INFINITY;
+      const bIndex = indexMap.get(b.id) ?? Number.POSITIVE_INFINITY;
+      return aIndex - bIndex;
+    });
+  } catch {
+    return items;
+  }
+}
+
 // ─── Deals ────────────────────────────────────────────────────────────────────
 
 export interface Deal {
   id: string;
   slug: string;
   title: string;
+  type: DealType;
   location: string;
-  perk: string;
-  summary: string;
+  tagline: string;
   image: string;
-  category: string;
-  tags: DealTag[];
+  price: number;
+  badge: DealBadge | null;
 }
 
 async function fetchDealsFromNotion(): Promise<Deal[]> {
   const dbId = process.env.NOTION_DEALS_DATABASE_ID;
+  const viewId = process.env.NOTION_DEALS_VIEW_ID;
   if (!process.env.NOTION_TOKEN || !dbId) return [];
 
   try {
-    const response = await notion.databases.query({
+    const response = await queryNotionCollection({
       database_id: dbId,
       filter: { property: "Active", checkbox: { equals: true } },
-      sorts: [{ property: "Order", direction: "ascending" }],
     });
 
     const deals: Deal[] = [];
@@ -55,25 +129,21 @@ async function fetchDealsFromNotion(): Promise<Deal[]> {
       const image = getFileUrl(props.Image) || getUrl(props.Image);
       if (!title || !image) continue;
       const slug = slugify(title);
-      const localDeal = localDeals.find((deal) => deal.slug === slug);
 
       deals.push({
         id: page.id,
         slug,
         title,
+        type: getSelect(props.Type),
         location: getRichText(props.Location),
-        perk: getRichText(props.Perk),
-        summary: getRichText(props.Summary),
+        tagline: getRichText(props.Tagline),
         image,
-        category: getSelect(props.Category) || localDeal?.category || "",
-        tags:
-          (getMultiSelect(props.Tags) as DealTag[]) ||
-          localDeal?.tags ||
-          [],
+        price: getNumber(props.Price),
+        badge: getSelect(props.Badge) || null,
       });
     }
 
-    return deals;
+    return reorderByNotionView(deals, viewId);
   } catch (err) {
     console.error("[Notion] Failed to fetch deals:", err);
     return [];
@@ -84,6 +154,11 @@ export const getDeals = unstable_cache(fetchDealsFromNotion, ["notion-deals"], {
   tags: ["deals"],
   revalidate: 60,
 });
+
+export async function getDealBySlug(slug: string): Promise<Deal | null> {
+  const deals = await getDeals();
+  return deals.find((deal) => deal.slug === slug) ?? null;
+}
 
 // ─── Reviews ──────────────────────────────────────────────────────────────────
 
@@ -96,13 +171,13 @@ export interface Review {
 
 async function fetchReviewsFromNotion(): Promise<Review[]> {
   const dbId = process.env.NOTION_REVIEWS_DATABASE_ID;
+  const viewId = process.env.NOTION_REVIEWS_VIEW_ID;
   if (!process.env.NOTION_TOKEN || !dbId) return [];
 
   try {
-    const response = await notion.databases.query({
+    const response = await queryNotionCollection({
       database_id: dbId,
       filter: { property: "Active", checkbox: { equals: true } },
-      sorts: [{ property: "Order", direction: "ascending" }],
     });
 
     const reviews: Review[] = [];
@@ -124,7 +199,7 @@ async function fetchReviewsFromNotion(): Promise<Review[]> {
       });
     }
 
-    return reviews;
+    return reorderByNotionView(reviews, viewId);
   } catch (err) {
     console.error("[Notion] Failed to fetch reviews:", err);
     return [];
@@ -149,13 +224,13 @@ export interface GalleryItem {
 
 async function fetchGalleryFromNotion(): Promise<GalleryItem[]> {
   const dbId = process.env.NOTION_GALLERY_DATABASE_ID;
+  const viewId = process.env.NOTION_GALLERY_VIEW_ID;
   if (!process.env.NOTION_TOKEN || !dbId) return [];
 
   try {
-    const response = await notion.databases.query({
+    const response = await queryNotionCollection({
       database_id: dbId,
       filter: { property: "Active", checkbox: { equals: true } },
-      sorts: [{ property: "Order", direction: "ascending" }],
     });
 
     const items: GalleryItem[] = [];
@@ -178,7 +253,7 @@ async function fetchGalleryFromNotion(): Promise<GalleryItem[]> {
       });
     }
 
-    return items;
+    return reorderByNotionView(items, viewId);
   } catch (err) {
     console.error("[Notion] Failed to fetch gallery:", err);
     return [];
@@ -201,10 +276,11 @@ export interface AboutStat {
 
 async function fetchAboutStatsFromNotion(): Promise<AboutStat[]> {
   const dbId = process.env.NOTION_ABOUT_STATS_DATABASE_ID;
+  const viewId = process.env.NOTION_ABOUT_STATS_VIEW_ID;
   if (!process.env.NOTION_TOKEN || !dbId) return [];
 
   try {
-    const response = await notion.databases.query({
+    const response = await queryNotionCollection({
       database_id: dbId,
       page_size: 20,
     });
@@ -227,7 +303,7 @@ async function fetchAboutStatsFromNotion(): Promise<AboutStat[]> {
       });
     }
 
-    return stats;
+    return reorderByNotionView(stats, viewId);
   } catch (err) {
     console.error("[Notion] Failed to fetch about stats:", err);
     return [];
@@ -250,21 +326,58 @@ export interface BlogPost {
   category: string;
 }
 
+export interface RichTextSpan {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  code?: boolean;
+  href?: string;
+}
+
 export interface BlogBlock {
   id: string;
-  type: "paragraph" | "heading_2" | "heading_3";
-  text: string;
+  type:
+    | "paragraph"
+    | "heading_1"
+    | "heading_2"
+    | "heading_3"
+    | "bullet"
+    | "numbered"
+    | "quote"
+    | "divider"
+    | "callout"
+    | "code"
+    | "table"
+    | "image"
+    | "bookmark"
+    | "embed"
+    | "video"
+    | "file"
+    | "pdf";
+  content: RichTextSpan[];
+  image?: string;
+  caption?: string;
+  icon?: string;
+  language?: string;
+  url?: string;
+  table?: {
+    hasColumnHeader: boolean;
+    hasRowHeader: boolean;
+    rows: RichTextSpan[][][];
+  };
 }
 
 async function fetchBlogsFromNotion(): Promise<BlogPost[]> {
   const dbId = process.env.NOTION_BLOGS_DATABASE_ID;
+  const viewId = process.env.NOTION_BLOGS_VIEW_ID;
   if (!process.env.NOTION_TOKEN || !dbId) return [];
 
   try {
-    const response = await notion.databases.query({
+    const response = await queryNotionCollection({
       database_id: dbId,
       filter: { property: "Published", checkbox: { equals: true } },
-      sorts: [{ property: "Date", direction: "descending" }],
     });
 
     const posts: BlogPost[] = [];
@@ -301,7 +414,7 @@ async function fetchBlogsFromNotion(): Promise<BlogPost[]> {
       });
     }
 
-    return posts;
+    return reorderByNotionView(posts, viewId);
   } catch (err) {
     console.error("[Notion] Failed to fetch blogs:", err);
     return [];
@@ -322,17 +435,161 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
 
     for (const block of response.results) {
       const b = block as { id: string; type: string; [key: string]: unknown };
-      const type = b.type as BlogBlock["type"];
-      if (!["paragraph", "heading_2", "heading_3"].includes(type)) continue;
+      const type = b.type;
 
-      const content = b[type] as {
-        rich_text?: Array<{ plain_text?: string }>;
+      if (type === "image") {
+        const blockData = b.image as
+          | {
+              type?: "file" | "external";
+              file?: { url?: string };
+              external?: { url?: string };
+              caption?: Array<unknown>;
+            }
+          | undefined;
+        const image =
+          blockData?.type === "file"
+            ? blockData.file?.url ?? ""
+            : blockData?.type === "external"
+              ? blockData.external?.url ?? ""
+              : "";
+
+        if (!image) continue;
+
+        blocks.push({
+          id: b.id,
+          type: "image",
+          content: [],
+          image,
+          caption: richTextToPlainText(blockData?.caption),
+        });
+        continue;
+      }
+
+      if (type === "divider") {
+        blocks.push({ id: b.id, type: "divider", content: [] });
+        continue;
+      }
+
+      if (type === "table") {
+        const blockData = b.table as
+          | {
+              has_column_header?: boolean;
+              has_row_header?: boolean;
+            }
+          | undefined;
+        const rowsResponse = await notion.blocks.children.list({ block_id: b.id });
+        const rows: RichTextSpan[][][] = [];
+
+        for (const rowBlock of rowsResponse.results) {
+          const row = rowBlock as {
+            type?: string;
+            table_row?: { cells?: Array<Array<unknown>> };
+          };
+          if (row.type !== "table_row") continue;
+
+          const cells =
+            row.table_row?.cells?.map((cell) => parseRichText(cell)) ?? [];
+          rows.push(cells);
+        }
+
+        if (!rows.length) continue;
+
+        blocks.push({
+          id: b.id,
+          type: "table",
+          content: [],
+          table: {
+            hasColumnHeader: blockData?.has_column_header ?? false,
+            hasRowHeader: blockData?.has_row_header ?? false,
+            rows,
+          },
+        });
+        continue;
+      }
+
+      if (type === "bookmark" || type === "embed") {
+        const blockData = b[type] as { url?: string } | undefined;
+        if (!blockData?.url) continue;
+        blocks.push({
+          id: b.id,
+          type,
+          content: [],
+          url: blockData.url,
+        });
+        continue;
+      }
+
+      if (type === "video" || type === "file" || type === "pdf") {
+        const blockData = b[type] as
+          | {
+              type?: "file" | "external";
+              file?: { url?: string };
+              external?: { url?: string };
+              caption?: Array<unknown>;
+            }
+          | undefined;
+        const url =
+          blockData?.type === "file"
+            ? blockData.file?.url ?? ""
+            : blockData?.type === "external"
+              ? blockData.external?.url ?? ""
+              : "";
+        if (!url) continue;
+        blocks.push({
+          id: b.id,
+          type,
+          content: [],
+          url,
+          caption: richTextToPlainText(blockData?.caption),
+        });
+        continue;
+      }
+
+      if (
+        ![
+          "paragraph",
+          "heading_1",
+          "heading_2",
+          "heading_3",
+          "bulleted_list_item",
+          "numbered_list_item",
+          "quote",
+          "callout",
+          "code",
+        ].includes(type)
+      ) {
+        continue;
+      }
+
+      const normalizedType =
+        type === "bulleted_list_item"
+          ? "bullet"
+          : type === "numbered_list_item"
+            ? "numbered"
+            : (type as Exclude<BlogBlock["type"], "image" | "divider" | "bookmark" | "embed" | "video" | "file" | "pdf">);
+
+      const blockData = b[type] as {
+        rich_text?: Array<unknown>;
+        icon?: { type?: "emoji"; emoji?: string };
+        language?: string;
       };
-      const text =
-        content?.rich_text?.map((r) => r.plain_text ?? "").join("") ?? "";
-      if (!text) continue;
+      const content = parseRichText(blockData?.rich_text);
 
-      blocks.push({ id: b.id, type, text });
+      if (
+        content.length === 0 &&
+        normalizedType !== "callout" &&
+        normalizedType !== "code"
+      ) {
+        continue;
+      }
+
+      blocks.push({
+        id: b.id,
+        type: normalizedType,
+        content,
+        icon: blockData?.icon?.type === "emoji" ? blockData.icon.emoji ?? "" : undefined,
+        language: blockData?.language,
+      });
     }
 
     return blocks;
@@ -342,11 +599,17 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
   }
 }
 
-export const getBlogBlocks = unstable_cache(
+export const getBlogBlocks = cache(unstable_cache(
   fetchBlogBlocksFromNotion,
   ["notion-blog-blocks"],
   { tags: ["blogs"], revalidate: 60 }
-);
+));
+
+export const getDealBlocks = cache(unstable_cache(
+  fetchBlogBlocksFromNotion,
+  ["notion-deal-blocks"],
+  { tags: ["deals"], revalidate: 60 }
+));
 
 // ─── Social Posts ─────────────────────────────────────────────────────────────
 
@@ -369,13 +632,13 @@ function detectPlatform(url: string): SocialPlatform | null {
 
 async function fetchSocialFromNotion(): Promise<SocialPost[]> {
   const dbId = process.env.NOTION_SOCIAL_DATABASE_ID;
+  const viewId = process.env.NOTION_SOCIAL_VIEW_ID;
   if (!process.env.NOTION_TOKEN || !dbId) return [];
 
   try {
-    const response = await notion.databases.query({
+    const response = await queryNotionCollection({
       database_id: dbId,
       filter: { property: "Active", checkbox: { equals: true } },
-      sorts: [{ property: "Order", direction: "ascending" }],
     });
 
     const posts: SocialPost[] = [];
@@ -400,7 +663,7 @@ async function fetchSocialFromNotion(): Promise<SocialPost[]> {
       });
     }
 
-    return posts;
+    return reorderByNotionView(posts, viewId);
   } catch (err) {
     console.error("[Notion] Failed to fetch social posts:", err);
     return [];
@@ -425,6 +688,47 @@ function getRichText(prop: unknown): string {
   if (!prop || typeof prop !== "object") return "";
   const p = prop as { rich_text?: Array<{ plain_text?: string }> };
   return p.rich_text?.[0]?.plain_text ?? "";
+}
+
+function richTextToPlainText(value: unknown): string | undefined {
+  const text = parseRichText(Array.isArray(value) ? value : []).map((span) => span.text).join("").trim();
+  return text || undefined;
+}
+
+function parseRichText(value: unknown): RichTextSpan[] {
+  if (!Array.isArray(value)) return [];
+
+  const spans: RichTextSpan[] = [];
+
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const textItem = item as {
+      plain_text?: string;
+      href?: string | null;
+      annotations?: {
+        bold?: boolean;
+        italic?: boolean;
+        underline?: boolean;
+        strikethrough?: boolean;
+        code?: boolean;
+      };
+      text?: { link?: { url?: string | null } | null };
+    };
+    const text = textItem.plain_text ?? "";
+    if (!text) continue;
+
+    spans.push({
+      text,
+      bold: textItem.annotations?.bold ?? false,
+      italic: textItem.annotations?.italic ?? false,
+      underline: textItem.annotations?.underline ?? false,
+      strikethrough: textItem.annotations?.strikethrough ?? false,
+      code: textItem.annotations?.code ?? false,
+      href: textItem.href ?? textItem.text?.link?.url ?? undefined,
+    });
+  }
+
+  return spans;
 }
 
 function getUrl(prop: unknown): string {
@@ -460,4 +764,10 @@ function getMultiSelect(prop: unknown): string[] {
   if (!prop || typeof prop !== "object") return [];
   const p = prop as { multi_select?: Array<{ name?: string }> };
   return p.multi_select?.map((item) => item.name ?? "").filter(Boolean) ?? [];
+}
+
+function getNumber(prop: unknown): number {
+  if (!prop || typeof prop !== "object") return 0;
+  const p = prop as { number?: number | null };
+  return p.number ?? 0;
 }

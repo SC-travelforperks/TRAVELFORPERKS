@@ -5,6 +5,7 @@ import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
 import { TrustBar } from './components/TrustBar';
 import { About } from './components/About';
+import { StrengthSection } from './components/StrengthSection';
 import { Services } from './components/Services';
 import { Process } from './components/Process';
 import { Deals } from './components/Deals';
@@ -35,7 +36,8 @@ export default function App({ deals, reviews, gallery, blogs, socialPosts, about
       <Navigation onPlanClick={() => setIsModalOpen(true)} />
       <Hero onEnquire={() => setIsModalOpen(true)} />
       <TrustBar />
-      <About stats={aboutStats} />
+      <About onEnquire={() => setIsModalOpen(true)} />
+      <StrengthSection stats={aboutStats} />
       <Services onEnquire={() => setIsModalOpen(true)} />
       <Process onEnquire={() => setIsModalOpen(true)} />
       <Deals deals={deals} />

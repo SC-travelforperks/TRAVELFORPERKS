@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { DealsCatalog } from "@/app/components/DealsCatalog";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { getDeals } from "@/lib/notion";
@@ -17,13 +16,6 @@ export default async function DealsPage() {
       <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="border-b border-border bg-secondary/35">
           <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-16 sm:px-6 sm:py-20 lg:px-8">
-            <Link
-              href="/"
-              className="text-sm tracking-[0.18em] text-muted-foreground hover:text-accent"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              BACK TO HOME
-            </Link>
             <div className="max-w-3xl">
               <h1
                 className="mb-6 text-4xl sm:text-5xl md:text-6xl"

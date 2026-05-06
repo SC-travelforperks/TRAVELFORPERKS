@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
 
 type ContentSection = {
@@ -9,13 +7,51 @@ type ContentSection = {
   bullets?: string[];
 };
 
+function renderInlineLink(text: string) {
+  const separatorIndex = text.indexOf(": ");
+  if (separatorIndex === -1) return text;
+
+  const label = text.slice(0, separatorIndex + 2);
+  const value = text.slice(separatorIndex + 2).trim();
+
+  if (/^https?:\/\//i.test(value)) {
+    return (
+      <>
+        {label}
+        <a
+          href={value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-4 transition-colors hover:text-accent"
+        >
+          {value}
+        </a>
+      </>
+    );
+  }
+
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    return (
+      <>
+        {label}
+        <a
+          href={`mailto:${value}`}
+          className="underline underline-offset-4 transition-colors hover:text-accent"
+        >
+          {value}
+        </a>
+      </>
+    );
+  }
+
+  return text;
+}
+
 export function ContentPage({
-  eyebrow,
   title,
   intro,
   sections,
 }: {
-  eyebrow: string;
   title: string;
   intro?: string;
   sections: ContentSection[];
@@ -25,20 +61,7 @@ export function ContentPage({
       <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="border-b border-border bg-secondary/30">
           <div className="mx-auto max-w-5xl px-5 py-16 sm:px-6 sm:py-20 lg:px-8">
-            <Link
-              href="/"
-              className="mb-8 inline-block text-[11px] uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-accent"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              Back to Home
-            </Link>
             <div className="max-w-3xl">
-              <p
-                className="mb-4 text-[13px] uppercase tracking-[0.24em] text-accent sm:text-sm"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                {eyebrow}
-              </p>
               <h1
                 className="mb-6 text-4xl tracking-[0.01em] sm:text-5xl md:text-6xl"
                 style={{ fontFamily: "'Instrument Serif', serif" }}
@@ -87,7 +110,7 @@ export function ContentPage({
                         style={{ fontFamily: "'Inter', sans-serif" }}
                       >
                         <span className="mt-3 h-px w-4 flex-shrink-0 bg-accent" />
-                        <span>{bullet}</span>
+                        <span>{renderInlineLink(bullet)}</span>
                       </li>
                     ))}
                   </ul>

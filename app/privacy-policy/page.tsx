@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <ContentPage
-      eyebrow="Travel For Perks"
       title="Privacy Policy"
       intro="Effective Date: May 2025 | Last Updated: May 2025"
       sections={[

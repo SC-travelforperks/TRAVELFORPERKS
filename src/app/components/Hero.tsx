@@ -16,20 +16,20 @@ export function Hero({ onEnquire }: { onEnquire: () => void }) {
           sizes="100vw"
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-black/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
       </div>
 
       <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center justify-center px-5 pt-24 text-white sm:px-8 sm:pt-28">
         <div className="max-w-4xl text-center">
           <h1
-            className="fade-up d-200 mb-7 text-4xl leading-[1.08] tracking-[0.01em] text-white sm:text-6xl sm:leading-[1.02] md:text-7xl md:leading-[0.98] lg:text-[5.25rem]"
+            className="fade-up d-200 mb-8 text-4xl leading-[1.18] tracking-[0.01em] text-white sm:text-6xl sm:leading-[1.12] md:text-7xl md:leading-[1.08] lg:text-[5.25rem] lg:leading-[1.06]"
             style={{ fontFamily: "'Instrument Serif', serif" }}
           >
             Journeys<br />Crafted for<br />the Discerning
           </h1>
           <p
-            className="fade-up d-300 mx-auto mb-9 max-w-2xl text-xs uppercase leading-[1.9] tracking-[0.2em] text-white/65 sm:text-[0.8rem]"
+            className="fade-up d-300 mx-auto mb-11 max-w-2xl text-sm uppercase leading-[2.2] tracking-[0.22em] text-white/65 sm:text-[0.8rem]"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Exclusive hotel access, bespoke itineraries, and white-glove service from first enquiry to final farewell.
