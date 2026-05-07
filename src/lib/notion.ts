@@ -139,7 +139,7 @@ async function fetchDealsFromNotion(): Promise<Deal[]> {
         tagline: getRichText(props.Tagline),
         image,
         price: getNumber(props.Price),
-        badge: getSelect(props.Badge) || null,
+        badge: getMultiSelect(props.Badge)[0] || null,
       });
     }
 
