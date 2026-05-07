@@ -14,7 +14,7 @@ export function InternalPageShell({
 }: {
   children: React.ReactNode;
 }) {
-  const logoSrc = "/ChatGPT_Image_May_7__2026__06_47_26_AM-removebg-preview.png";
+  const logoSrc = "/logo.png";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isVisible } = useScrollHeaderVisibility();

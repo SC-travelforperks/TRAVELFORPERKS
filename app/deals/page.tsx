@@ -4,9 +4,24 @@ import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { getDeals } from "@/lib/notion";
 
 export const metadata: Metadata = {
-  title: "Luxury Travel Deals | Travel For Perks",
+  title: "Luxury Travel Deals",
   description:
-    "Browse exclusive luxury travel deals with VIP perks, added amenities, and curated hotel offers from Travel For Perks.",
+    "Browse exclusive luxury travel deals with VIP perks, room upgrades, resort credits, and curated hotel offers. Handpicked offers for discerning travelers.",
+  alternates: { canonical: "/deals" },
+  openGraph: {
+    title: "Luxury Travel Deals | Travel for Perks",
+    description:
+      "Browse exclusive luxury travel deals with VIP perks, room upgrades, resort credits, and curated hotel offers.",
+    url: "/deals",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Luxury Travel Deals | Travel for Perks",
+    description:
+      "Browse exclusive luxury travel deals with VIP perks, room upgrades, resort credits, and curated hotel offers.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default async function DealsPage() {

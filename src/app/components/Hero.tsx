@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import heroImage from '../../../public/san-diego-dawn-early-morning-with-palm-tree-silhouette (1).jpg'
+import heroImage from '../../../public/hero-background.jpg'
 
 export function Hero({ onEnquire }: { onEnquire: () => void }) {
   return (

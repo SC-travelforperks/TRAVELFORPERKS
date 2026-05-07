@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { ContentPage } from "@/app/components/ContentPage";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | Travel For Perks",
+  title: "Terms and Conditions",
   description:
-    "Read the Travel For Perks terms and conditions for services, bookings, fees, and client responsibilities.",
+    "Read the Travel for Perks terms and conditions for services, bookings, fees, and client responsibilities.",
+  alternates: { canonical: "/terms-and-conditions" },
+  robots: { index: false },
 };
 
 export default function TermsAndConditionsPage() {

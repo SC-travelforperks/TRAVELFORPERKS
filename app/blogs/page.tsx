@@ -4,9 +4,24 @@ import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { getBlogs } from "@/lib/notion";
 
 export const metadata: Metadata = {
-  title: "Latest Insights | Travel For Perks",
+  title: "Travel Insights & Guides",
   description:
-    "Read destination notes, hotel updates, and luxury travel planning insights from Travel For Perks.",
+    "Destination inspiration, hotel reviews, curated itineraries, and luxury travel planning guides — insights from Travel for Perks.",
+  alternates: { canonical: "/blogs" },
+  openGraph: {
+    title: "Travel Insights & Guides | Travel for Perks",
+    description:
+      "Destination inspiration, hotel reviews, curated itineraries, and luxury travel planning guides.",
+    url: "/blogs",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Travel Insights & Guides | Travel for Perks",
+    description:
+      "Destination inspiration, hotel reviews, curated itineraries, and luxury travel planning guides.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default async function BlogsPage() {

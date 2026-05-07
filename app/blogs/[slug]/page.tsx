@@ -21,10 +21,26 @@ export async function generateMetadata({
   const { slug } = await params;
   const posts = await getBlogs();
   const post = posts.find((p) => p.slug === slug);
-  if (!post) return { title: "Blog Not Found | Travel For Perks" };
+  if (!post) return { title: "Blog Not Found" };
   return {
-    title: `${post.title} | Travel For Perks`,
+    title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/blogs/${post.slug}` },
+    openGraph: {
+      title: `${post.title} | Travel for Perks`,
+      description: post.excerpt,
+      url: `/blogs/${post.slug}`,
+      type: "article",
+      images: post.image
+        ? [{ url: post.image, width: 1200, height: 630, alt: post.title }]
+        : [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | Travel for Perks`,
+      description: post.excerpt,
+      images: post.image ? [post.image] : ["/og-image.jpg"],
+    },
   };
 }
 
@@ -35,6 +51,18 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
   if (!post) notFound();
 
   const blocks = await getBlogBlocks(post.id);
+
+  const blogSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.image || undefined,
+    url: `https://www.travelforperks.com/blogs/${post.slug}`,
+    datePublished: post.date,
+    author: { '@type': 'Organization', name: 'Travel for Perks', url: 'https://www.travelforperks.com' },
+    publisher: { '@type': 'Organization', name: 'Travel for Perks', url: 'https://www.travelforperks.com' },
+  };
 
   return (
     <InternalPageShell>
@@ -108,6 +136,10 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
           <NotionRichContent blocks={blocks} titleFallback={post.title} />
         </article>
       </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
     </InternalPageShell>
   );
 }

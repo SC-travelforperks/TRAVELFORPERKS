@@ -4,9 +4,16 @@ import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { XIcon, InstagramIcon, YouTubeIcon } from "@/app/components/icons";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Travel For Perks",
+  title: "Contact Us",
   description:
-    "Get in touch with Travel For Perks by email, WhatsApp, Instagram, X, or YouTube.",
+    "Get in touch with Travel for Perks by email, WhatsApp, Instagram, X, or YouTube. We respond within 12 hours.",
+  alternates: { canonical: "/contact-us" },
+  openGraph: {
+    title: "Contact Us | Travel for Perks",
+    description:
+      "Reach Travel for Perks by email, WhatsApp, Instagram, X, or YouTube. We respond within 12 hours.",
+    url: "/contact-us",
+  },
 };
 
 function ContactCard({

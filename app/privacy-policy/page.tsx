@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { ContentPage } from "@/app/components/ContentPage";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Travel For Perks",
+  title: "Privacy Policy",
   description:
-    "Read the Travel For Perks privacy policy covering data collection, usage, cookies, and client rights.",
+    "Read the Travel for Perks privacy policy covering data collection, usage, cookies, and client rights.",
+  alternates: { canonical: "/privacy-policy" },
+  robots: { index: false },
 };
 
 export default function PrivacyPolicyPage() {

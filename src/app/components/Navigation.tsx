@@ -9,7 +9,7 @@ import { useScrollHeaderVisibility } from "./useScrollHeaderVisibility";
 export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isVisible, isScrolled } = useScrollHeaderVisibility();
-  const logoSrc = "/ChatGPT_Image_May_7__2026__06_47_26_AM-removebg-preview.png";
+  const logoSrc = "/logo.png";
 
   const closeMenu = () => setIsMenuOpen(false);
 

@@ -4,9 +4,24 @@ import { GalleryPageClient } from "@/app/components/GalleryPageClient";
 import { getGallery } from "@/lib/notion";
 
 export const metadata: Metadata = {
-  title: "Travel Gallery | Travel For Perks",
+  title: "Travel Gallery",
   description:
-    "Browse destination, hotel, food, and travel experience photography from Travel For Perks.",
+    "A visual collection of hotels, destinations, flavors, and moments that inspire the itineraries we build — by Travel for Perks.",
+  alternates: { canonical: "/gallery" },
+  openGraph: {
+    title: "Travel Gallery | Travel for Perks",
+    description:
+      "A visual collection of hotels, destinations, flavors, and moments that inspire the itineraries we build.",
+    url: "/gallery",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Travel Gallery | Travel for Perks",
+    description:
+      "A visual collection of hotels, destinations, flavors, and moments that inspire the itineraries we build.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default async function GalleryPage() {

@@ -2,9 +2,9 @@
 
 import Image, { type StaticImageData } from 'next/image'
 import { useInView } from './useInView'
-import hotelCollectionImage from '../../../public/travel-relaxation-umbrella-luxury-hotels.jpg'
-import curatedJourneysImage from '../../../public/glass-red-wine-bottle-bar-counter.jpg'
-import immersiveExperienceImage from '../../../public/image.png'
+import hotelCollectionImage from '../../../public/service-hotel-collection.jpg'
+import curatedJourneysImage from '../../../public/service-curated-journeys.jpg'
+import immersiveExperienceImage from '../../../public/service-immersive-experience.png'
 
 const services = [
   {

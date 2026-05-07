@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import aboutImage from '../../../public/20260415_150607.jpg'
+import aboutImage from '../../../public/about-founder.jpg'
 import { useInView } from './useInView'
 
 export function About({ onEnquire }: { onEnquire: () => void }) {

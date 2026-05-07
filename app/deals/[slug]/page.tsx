@@ -29,9 +29,7 @@ export async function generateMetadata({
   const deal = await getDealBySlug(slug);
 
   if (!deal) {
-    return {
-      title: "Deal Not Found | Travel For Perks",
-    };
+    return { title: "Deal Not Found" };
   }
 
   const blocks = await getDealBlocks(deal.id);
@@ -41,10 +39,26 @@ export async function generateMetadata({
     deal.price > 0
       ? ` Starting from ₹${deal.price.toLocaleString("en-IN")}.`
       : "";
+  const fullDescription = `${deal.location}. ${description}${priceLine}`.trim();
 
   return {
-    title: `${deal.title} | Travel For Perks`,
-    description: `${deal.location}. ${description}${priceLine}`,
+    title: deal.title,
+    description: fullDescription,
+    alternates: { canonical: `/deals/${deal.slug}` },
+    openGraph: {
+      title: `${deal.title} | Travel for Perks`,
+      description: fullDescription,
+      url: `/deals/${deal.slug}`,
+      images: deal.image
+        ? [{ url: deal.image, width: 1200, height: 630, alt: deal.title }]
+        : [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${deal.title} | Travel for Perks`,
+      description: fullDescription,
+      images: deal.image ? [deal.image] : ["/og-image.jpg"],
+    },
   };
 }
 
@@ -58,6 +72,22 @@ export default async function DealDetailPage({ params }: DealPageProps) {
 
   const blocks = await getDealBlocks(deal.id);
   const hasRichContent = blocks.length > 0;
+
+  const dealSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: deal.title,
+    description: deal.tagline,
+    image: deal.image || undefined,
+    brand: { '@type': 'Organization', name: 'Travel for Perks' },
+    offers: {
+      '@type': 'Offer',
+      url: `https://www.travelforperks.com/deals/${deal.slug}`,
+      priceCurrency: 'INR',
+      ...(deal.price > 0 && { price: deal.price }),
+      availability: 'https://schema.org/InStock',
+    },
+  };
 
   return (
     <InternalPageShell>
@@ -236,6 +266,10 @@ export default async function DealDetailPage({ params }: DealPageProps) {
           </aside>
         </section>
       </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(dealSchema) }}
+      />
     </InternalPageShell>
   );
 }

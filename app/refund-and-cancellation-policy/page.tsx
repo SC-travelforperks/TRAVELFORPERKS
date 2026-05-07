@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { ContentPage } from "@/app/components/ContentPage";
 
 export const metadata: Metadata = {
-  title: "Refund and Cancellation Policy | Travel For Perks",
+  title: "Refund and Cancellation Policy",
   description:
-    "Read the Travel For Perks refund and cancellation policy for planning fees, supplier bookings, and refunds.",
+    "Read the Travel for Perks refund and cancellation policy for planning fees, supplier bookings, and refunds.",
+  alternates: { canonical: "/refund-and-cancellation-policy" },
+  robots: { index: false },
 };
 
 export default function RefundAndCancellationPolicyPage() {

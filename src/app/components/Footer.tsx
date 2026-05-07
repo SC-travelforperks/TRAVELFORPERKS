@@ -44,7 +44,7 @@ export function Footer({ onPlanClick }: { onPlanClick: () => void }) {
           <div className="mb-12 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
             <div className="sm:col-span-2 md:col-span-1 text-center">
               <Image
-                src="/ChatGPT_Image_May_7__2026__06_47_26_AM-removebg-preview.png"
+                src="/logo.png"
                 alt="Travel for Perks"
                 width={64}
                 height={53}
