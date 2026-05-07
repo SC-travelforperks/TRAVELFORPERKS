@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import { Analytics } from '@vercel/analytics/next'
 import '../src/styles/index.css'
 import { Toaster } from '../src/app/components/ui/sonner'
 
@@ -101,6 +102,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body suppressHydrationWarning>
         {children}
+        <Analytics />
         <Toaster />
         <script
           type="application/ld+json"
