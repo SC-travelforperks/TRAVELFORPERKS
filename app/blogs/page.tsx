@@ -50,11 +50,20 @@ export default async function BlogsPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
-            {posts.map((post, index) => (
-              <BlogCard key={post.slug} post={post} priority={index < 2} />
-            ))}
-          </div>
+          {posts.length === 0 ? (
+            <p
+              className="py-20 text-center text-sm leading-7 text-muted-foreground"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              No posts published yet. Destination guides and travel insights are on their way.
+            </p>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
+              {posts.map((post, index) => (
+                <BlogCard key={post.slug} post={post} priority={index < 2} />
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </InternalPageShell>

@@ -27,6 +27,17 @@ export function DealsCatalog({ deals }: { deals: Deal[] }) {
     }, {})
   }, [deals])
 
+  if (deals.length === 0) {
+    return (
+      <p
+        className="py-20 text-center text-sm leading-7 text-muted-foreground"
+        style={{ fontFamily: "'Inter', sans-serif" }}
+      >
+        No deals are available right now. Check back soon — we're always adding new offers.
+      </p>
+    )
+  }
+
   return (
     <div>
       <div className="mb-5 flex flex-wrap gap-2.5 sm:mb-6">

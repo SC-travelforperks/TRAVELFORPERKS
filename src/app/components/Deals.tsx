@@ -26,17 +26,26 @@ export function Deals({ deals }: { deals: Deal[] }) {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
-          {homepageDeals.map((deal, index) => (
-            <div
-              key={deal.id}
-              className={inView ? 'fade-up' : 'opacity-0'}
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <DealCard deal={deal} priority={index === 0} />
-            </div>
-          ))}
-        </div>
+        {homepageDeals.length === 0 ? (
+          <p
+            className={`py-16 text-center text-sm leading-7 text-muted-foreground ${inView ? 'fade-up' : 'opacity-0'}`}
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            We're curating exclusive deals for you. Check back soon.
+          </p>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
+            {homepageDeals.map((deal, index) => (
+              <div
+                key={deal.id}
+                className={inView ? 'fade-up' : 'opacity-0'}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <DealCard deal={deal} priority={index === 0} />
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className={`mt-14 text-center ${inView ? 'fade-up d-400' : 'opacity-0'}`}>
           <Link

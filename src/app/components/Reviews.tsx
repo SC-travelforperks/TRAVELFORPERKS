@@ -32,52 +32,62 @@ export function Reviews({ reviews }: { reviews: Review[] }) {
           <h2 className="text-4xl tracking-[0.01em] sm:text-5xl" style={{ fontFamily: "'Instrument Serif', serif" }}>Client Experiences</h2>
         </div>
 
-        <div className={`mb-5 flex items-center justify-between gap-4 ${inView ? 'fade-up d-200' : 'opacity-0'}`}>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Swipe or use arrows to explore reviews
+        {reviews.length === 0 ? (
+          <p
+            className={`py-16 text-center text-sm leading-7 text-muted-foreground ${inView ? 'fade-up d-200' : 'opacity-0'}`}
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            Client stories are on their way. Check back soon.
           </p>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Scroll testimonials left"
-              onClick={() => scrollByAmount('left')}
-              className="inline-flex h-10 w-10 items-center justify-center border border-border bg-card text-primary transition-colors hover:border-accent hover:text-accent"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              aria-label="Scroll testimonials right"
-              onClick={() => scrollByAmount('right')}
-              className="inline-flex h-10 w-10 items-center justify-center border border-border bg-card text-primary transition-colors hover:border-accent hover:text-accent"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Horizontal scroll carousel */}
-        <div
-          ref={scrollRef}
-          className={`flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none ${inView ? 'fade-up d-200' : 'opacity-0'}`}
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {reviews.map((review) => (
-            <div
-              key={review.id}
-              className="relative flex-shrink-0 w-[85vw] max-w-sm snap-start border border-border bg-card px-7 py-8 sm:w-80"
-            >
-              <div className="mb-5 text-5xl leading-none text-accent/25" style={{ fontFamily: "'Cormorant Garamond', serif" }}>&ldquo;</div>
-              <p className="mb-8 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
-                {review.quote}
+        ) : (
+          <>
+            <div className={`mb-5 flex items-center justify-between gap-4 ${inView ? 'fade-up d-200' : 'opacity-0'}`}>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                Swipe or use arrows to explore reviews
               </p>
-              <div className="border-t border-border pt-5">
-                <div className="text-sm uppercase tracking-[0.16em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>{review.name}</div>
-                <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-accent" style={{ fontFamily: "'Inter', sans-serif" }}>{review.location}</div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  aria-label="Scroll testimonials left"
+                  onClick={() => scrollByAmount('left')}
+                  className="inline-flex h-10 w-10 items-center justify-center border border-border bg-card text-primary transition-colors hover:border-accent hover:text-accent"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Scroll testimonials right"
+                  onClick={() => scrollByAmount('right')}
+                  className="inline-flex h-10 w-10 items-center justify-center border border-border bg-card text-primary transition-colors hover:border-accent hover:text-accent"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
               </div>
             </div>
-          ))}
-        </div>
+
+            <div
+              ref={scrollRef}
+              className={`flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none ${inView ? 'fade-up d-200' : 'opacity-0'}`}
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="relative flex-shrink-0 w-[85vw] max-w-sm snap-start border border-border bg-card px-7 py-8 sm:w-80"
+                >
+                  <div className="mb-5 text-5xl leading-none text-accent/25" style={{ fontFamily: "'Cormorant Garamond', serif" }}>&ldquo;</div>
+                  <p className="mb-8 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    {review.quote}
+                  </p>
+                  <div className="border-t border-border pt-5">
+                    <div className="text-sm uppercase tracking-[0.16em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>{review.name}</div>
+                    <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-accent" style={{ fontFamily: "'Inter', sans-serif" }}>{review.location}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   )
