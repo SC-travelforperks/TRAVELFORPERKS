@@ -28,28 +28,30 @@ export function Hero({ onEnquire }: { onEnquire: () => void }) {
           >
             Journeys<br />Crafted for<br />the Discerning
           </h1>
-          <p
-            className="fade-up d-300 mx-auto mt-4 mb-14 max-w-[18rem] text-[0.84rem] uppercase leading-[2] tracking-[0.14em] text-white sm:mt-0 sm:mb-11 sm:max-w-2xl sm:text-[0.8rem] sm:leading-[2.2] sm:tracking-[0.2em]"
-            style={{ fontFamily: "'Inter', sans-serif", textShadow: '0 10px 26px rgba(0,0,0,0.34), 0 3px 12px rgba(0,0,0,0.28)' }}
-          >
-            Exclusive hotel access, bespoke itineraries, and white-glove service from first enquiry to final farewell.
-          </p>
-          <div className="fade-up d-400 flex flex-col items-center justify-center gap-5 sm:flex-row sm:flex-wrap sm:gap-5">
-            <button
-              onClick={onEnquire}
-              className="w-full max-w-[17.5rem] border border-white/45 bg-black/32 px-7 py-3.5 text-[11px] uppercase tracking-[0.26em] text-white shadow-[0_16px_36px_rgba(0,0,0,0.24)] backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-primary sm:w-auto sm:max-w-none"
-              style={{ fontFamily: "'Inter', sans-serif", textShadow: '0 4px 14px rgba(0,0,0,0.32)' }}
+          <div className="mt-20 sm:mt-0">
+            <p
+              className="fade-up d-300 mx-auto mb-14 max-w-[18rem] text-[0.84rem] uppercase leading-[2] tracking-[0.14em] text-white sm:mb-11 sm:max-w-2xl sm:text-[0.8rem] sm:leading-[2.2] sm:tracking-[0.2em]"
+              style={{ fontFamily: "'Inter', sans-serif", textShadow: '0 10px 26px rgba(0,0,0,0.34), 0 3px 12px rgba(0,0,0,0.28)' }}
             >
-              BEGIN YOUR JOURNEY
-            </button>
-            <a
-              href="#services"
-              className="inline-flex items-center gap-2.5 border border-white/38 bg-black/28 px-5 py-3 text-[11px] uppercase tracking-[0.2em] text-white shadow-[0_14px_32px_rgba(0,0,0,0.22)] backdrop-blur-md transition-colors duration-200 hover:bg-white hover:text-primary sm:tracking-[0.22em]"
-              style={{ fontFamily: "'Inter', sans-serif", textShadow: '0 6px 18px rgba(0,0,0,0.32)' }}
-            >
-              Explore Services
-              <span className="h-px w-6 bg-current" />
-            </a>
+              Exclusive hotel access, bespoke itineraries, and white-glove service from first enquiry to final farewell.
+            </p>
+            <div className="fade-up d-400 flex flex-col items-center justify-center gap-5 sm:flex-row sm:flex-wrap sm:gap-5">
+              <button
+                onClick={onEnquire}
+                className="w-full max-w-[17.5rem] border border-white/45 bg-black/32 px-7 py-3.5 text-[11px] uppercase tracking-[0.26em] text-white shadow-[0_16px_36px_rgba(0,0,0,0.24)] backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-primary sm:w-auto sm:max-w-none"
+                style={{ fontFamily: "'Inter', sans-serif", textShadow: '0 4px 14px rgba(0,0,0,0.32)' }}
+              >
+                BEGIN YOUR JOURNEY
+              </button>
+              <a
+                href="#services"
+                className="inline-flex items-center gap-2.5 border border-white/38 bg-black/28 px-5 py-3 text-[11px] uppercase tracking-[0.2em] text-white shadow-[0_14px_32px_rgba(0,0,0,0.22)] backdrop-blur-md transition-colors duration-200 hover:bg-white hover:text-primary sm:tracking-[0.22em]"
+                style={{ fontFamily: "'Inter', sans-serif", textShadow: '0 6px 18px rgba(0,0,0,0.32)' }}
+              >
+                Explore Services
+                <span className="h-px w-6 bg-current" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
