@@ -61,7 +61,7 @@ export default function RefundAndCancellationPolicyPage() {
         {
           heading: "8. How to Cancel",
           paragraphs: [
-            "To initiate a cancellation, contact travelforperks@gmail.com with your booking reference and reason for cancellation. We will review the applicable supplier policy and advise you on next steps before any cancellation is processed.",
+            "To initiate a cancellation, contact enquiry@travelforperks.com with your booking reference and reason for cancellation. We will review the applicable supplier policy and advise you on next steps before any cancellation is processed.",
           ],
         },
         {

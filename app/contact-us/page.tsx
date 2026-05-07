@@ -69,8 +69,8 @@ export default function ContactUsPage() {
             <ContactCard
               icon={<Mail className="h-5 w-5" style={{ color: "var(--accent)" }} />}
               label="Email"
-              value="travelforperks@gmail.com"
-              href="mailto:travelforperks@gmail.com"
+              value="enquiry@travelforperks.com"
+              href="mailto:enquiry@travelforperks.com"
             />
 
             <ContactCard
