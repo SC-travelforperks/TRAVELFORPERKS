@@ -5,6 +5,7 @@ import Image from 'next/image'
 import type { GalleryItem } from '@/lib/notion'
 
 import { GalleryLightbox } from './GalleryLightbox'
+import { trackEvent } from '@/lib/analytics'
 
 export function GalleryPageClient({ items }: { items: GalleryItem[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
@@ -19,7 +20,7 @@ export function GalleryPageClient({ items }: { items: GalleryItem[] }) {
           >
             <button
               type="button"
-              onClick={() => setActiveIndex(index)}
+              onClick={() => { setActiveIndex(index); trackEvent('gallery_image_open', { item_name: item.title, source: 'gallery_page' }) }}
               className="block w-full text-left"
               aria-label={`Open ${item.title} in full screen`}
             >

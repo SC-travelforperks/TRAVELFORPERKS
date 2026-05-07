@@ -4,6 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
+import { DealViewTracker } from "@/app/components/DealViewTracker";
+import { DealWhatsAppButton } from "@/app/components/DealWhatsAppButton";
 import { NotionRichContent, getBlocksPlainText } from "@/app/components/NotionRichContent";
 import {
   DealBadgeIcon,
@@ -91,6 +93,7 @@ export default async function DealDetailPage({ params }: DealPageProps) {
 
   return (
     <InternalPageShell>
+      <DealViewTracker title={deal.title} slug={deal.slug} />
       <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="relative overflow-hidden">
           <div className="absolute inset-0">
@@ -243,17 +246,7 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               )}
 
               <div className="space-y-3 pt-2">
-                <a
-                  href={`https://wa.me/919899889476?text=${encodeURIComponent(
-                    `Hi Travel For Perks, I'm interested in the "${deal.title}" offer. Please share more details.`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center bg-accent px-6 py-4 text-[11px] uppercase tracking-[0.18em] text-accent-foreground transition-opacity hover:opacity-90"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Enquire on WhatsApp
-                </a>
+                <DealWhatsAppButton title={deal.title} />
                 <Link
                   href="/contact-us"
                   className="inline-flex w-full items-center justify-center border border-primary px-6 py-4 text-[11px] uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground"

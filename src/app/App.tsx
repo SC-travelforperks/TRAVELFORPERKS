@@ -18,6 +18,7 @@ import { Footer } from './components/Footer';
 import { EnquiryModal } from './components/EnquiryModal';
 import { FloatingContact } from './components/FloatingContact';
 import type { Deal, Review, GalleryItem, BlogPost, SocialPost, AboutStat } from '@/lib/notion';
+import { trackEvent } from '@/lib/analytics';
 
 interface AppProps {
   deals: Deal[];
@@ -33,21 +34,21 @@ export default function App({ deals, reviews, gallery, blogs, socialPosts, about
 
   return (
     <div className="min-h-screen">
-      <Navigation onPlanClick={() => setIsModalOpen(true)} />
-      <Hero onEnquire={() => setIsModalOpen(true)} />
+      <Navigation onPlanClick={() => { trackEvent('enquiry_modal_open', { source: 'nav' }); setIsModalOpen(true); }} />
+      <Hero onEnquire={() => { trackEvent('enquiry_modal_open', { source: 'hero' }); setIsModalOpen(true); }} />
       <TrustBar />
-      <About onEnquire={() => setIsModalOpen(true)} />
+      <About onEnquire={() => { trackEvent('enquiry_modal_open', { source: 'about' }); setIsModalOpen(true); }} />
       <StrengthSection stats={aboutStats} />
-      <Services onEnquire={() => setIsModalOpen(true)} />
-      <Process onEnquire={() => setIsModalOpen(true)} />
+      <Services onEnquire={() => { trackEvent('enquiry_modal_open', { source: 'services' }); setIsModalOpen(true); }} />
+      <Process onEnquire={() => { trackEvent('enquiry_modal_open', { source: 'process' }); setIsModalOpen(true); }} />
       <Deals deals={deals} />
       <Reviews reviews={reviews} />
       <Gallery galleryItems={gallery} />
       <Blogs posts={blogs} />
       {socialPosts.length > 0 && <SocialSection posts={socialPosts} />}
       <FAQs />
-      <Footer onPlanClick={() => setIsModalOpen(true)} />
-      <FloatingContact onEnquiryClick={() => setIsModalOpen(true)} />
+      <Footer onPlanClick={() => { trackEvent('enquiry_modal_open', { source: 'footer' }); setIsModalOpen(true); }} />
+      <FloatingContact onEnquiryClick={() => { trackEvent('enquiry_modal_open', { source: 'floating_button' }); setIsModalOpen(true); }} />
       <EnquiryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );

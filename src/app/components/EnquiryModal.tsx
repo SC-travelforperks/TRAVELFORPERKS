@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { CheckCircle2, Clock3, PhoneCall, X } from "lucide-react";
 import { toast } from "sonner";
+import { trackEvent } from "@/lib/analytics";
 
 const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919899889476";
 const whatsappHref = `https://wa.me/${whatsappNumber}`;
@@ -105,6 +106,7 @@ export function EnquiryModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
       }
 
       setIsSubmitted(true);
+      trackEvent('generate_lead', { source: 'enquiry_modal' });
     } catch {
       toast.error("Network error. Please try again in a moment.");
     } finally {

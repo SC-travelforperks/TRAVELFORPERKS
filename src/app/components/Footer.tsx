@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useInView } from './useInView'
 import { XIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon } from './icons'
+import { trackEvent } from '@/lib/analytics'
 
 const instagramHref = 'https://www.instagram.com/travelforperks/'
 const xHref = 'https://x.com/travelforperks'
@@ -90,16 +91,16 @@ export function Footer({ onPlanClick }: { onPlanClick: () => void }) {
             <div id="social">
               <div className="mb-5 text-[11px] uppercase tracking-[0.24em] text-primary-foreground/50" style={{ fontFamily: "'Inter', sans-serif" }}>Connect</div>
               <div className="flex items-center gap-4">
-                <a href={xHref} target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" className="text-primary-foreground/60 transition-colors hover:text-primary-foreground">
+                <a href={xHref} target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" onClick={() => trackEvent('social_link_click', { platform: 'x', source: 'footer' })} className="text-primary-foreground/60 transition-colors hover:text-primary-foreground">
                   <XIcon className="h-5 w-5" />
                 </a>
-                <a href={instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-primary-foreground/60 transition-colors hover:text-primary-foreground">
+                <a href={instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Instagram" onClick={() => trackEvent('social_link_click', { platform: 'instagram', source: 'footer' })} className="text-primary-foreground/60 transition-colors hover:text-primary-foreground">
                   <InstagramIcon className="h-5 w-5" />
                 </a>
-                <a href={youtubeHref} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-primary-foreground/60 transition-colors hover:text-primary-foreground">
+                <a href={youtubeHref} target="_blank" rel="noopener noreferrer" aria-label="YouTube" onClick={() => trackEvent('social_link_click', { platform: 'youtube', source: 'footer' })} className="text-primary-foreground/60 transition-colors hover:text-primary-foreground">
                   <YouTubeIcon className="h-5 w-5" />
                 </a>
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-primary-foreground/60 transition-colors hover:text-primary-foreground">
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" onClick={() => trackEvent('whatsapp_click', { source: 'footer' })} className="text-primary-foreground/60 transition-colors hover:text-primary-foreground">
                   <WhatsAppIcon className="h-5 w-5" />
                 </a>
               </div>

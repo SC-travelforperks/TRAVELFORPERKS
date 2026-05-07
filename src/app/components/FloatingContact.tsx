@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Sparkles, X } from "lucide-react";
 import { WhatsAppIcon } from "./icons";
+import { trackEvent } from "@/lib/analytics";
 
 const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919899889476";
 const whatsappHref = `https://wa.me/${whatsappNumber}`;
@@ -25,6 +26,7 @@ export function FloatingContact({ onEnquiryClick }: { onEnquiryClick: () => void
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent('whatsapp_click', { source: 'floating_button' })}
               initial={{ opacity: 0, y: 16, scale: 0.85 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 16, scale: 0.85 }}

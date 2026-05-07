@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { NotionRichContent } from "@/app/components/NotionRichContent";
+import { BlogViewTracker } from "@/app/components/BlogViewTracker";
 import { getBlogs, getBlogBlocks } from "@/lib/notion";
 
 type BlogPageProps = {
@@ -66,6 +67,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
 
   return (
     <InternalPageShell>
+      <BlogViewTracker title={post.title} slug={post.slug} />
       <main className="min-h-screen bg-background pb-20 sm:pb-24">
         <section className="border-b border-border bg-secondary/20 py-16 sm:py-20 lg:py-24">
           <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">

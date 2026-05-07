@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin } from 'lucide-react'
@@ -8,10 +10,14 @@ import {
   dealTypeLabels,
   getDealBadgeClassName,
 } from './dealTagStyles'
+import { trackEvent } from '@/lib/analytics'
 
 export function DealCard({ deal, priority = false }: { deal: Deal; priority?: boolean }) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden border border-border bg-background transition-all duration-500 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl">
+    <article
+      className="group flex h-full flex-col overflow-hidden border border-border bg-background transition-all duration-500 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl"
+      onClick={() => trackEvent('select_item', { item_name: deal.title, item_id: deal.slug, item_category: 'deal' })}
+    >
       <Link href={`/deals/${deal.slug}`} className="relative block overflow-hidden">
         <Image
           src={deal.image}

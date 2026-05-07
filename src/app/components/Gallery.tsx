@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useInView } from './useInView'
 import { GalleryLightbox } from './GalleryLightbox'
 import type { GalleryItem } from '@/lib/notion'
+import { trackEvent } from '@/lib/analytics'
 
 export function Gallery({ galleryItems }: { galleryItems: GalleryItem[] }) {
   const { ref, inView } = useInView()
@@ -34,7 +35,7 @@ export function Gallery({ galleryItems }: { galleryItems: GalleryItem[] }) {
               <button
                 type="button"
                 key={item.id}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => { setActiveIndex(index); trackEvent('gallery_image_open', { item_name: item.title, source: 'homepage' }) }}
                 className={`group relative mb-3 block w-full break-inside-avoid overflow-hidden text-left sm:mb-4 ${inView ? 'scale-in' : 'opacity-0'}`}
                 style={{ animationDelay: `${(index % 6) * 80}ms` }}
                 aria-label={`Open ${item.title} in full screen`}

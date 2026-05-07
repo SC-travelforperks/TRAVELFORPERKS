@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useInView } from './useInView'
+import { trackEvent } from '@/lib/analytics'
 
 const faqs = [
   {
@@ -67,7 +68,11 @@ export function FAQs() {
           {faqs.map((faq, index) => (
             <div key={index} className="border-b border-border">
               <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                onClick={() => {
+                  const opening = openIndex !== index
+                  setOpenIndex(opening ? index : null)
+                  if (opening) trackEvent('faq_opened', { question: faq.question.slice(0, 75) })
+                }}
                 className="flex w-full items-center justify-between gap-6 py-6 text-left"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
