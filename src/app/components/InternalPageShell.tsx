@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Footer } from "./Footer";
@@ -13,6 +14,7 @@ export function InternalPageShell({
 }: {
   children: React.ReactNode;
 }) {
+  const logoSrc = "/ChatGPT_Image_May_7__2026__06_47_26_AM-removebg-preview.png";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isVisible } = useScrollHeaderVisibility();
@@ -22,13 +24,20 @@ export function InternalPageShell({
   return (
     <div className="min-h-screen bg-background">
       <header
-        className={`sticky top-0 z-40 h-16 border-b border-border bg-background/95 shadow-sm backdrop-blur-sm transition-transform duration-300 px-5 sm:px-6 lg:px-8 ${
+        className={`sticky top-0 z-40 h-20 border-b border-border bg-background/95 shadow-sm backdrop-blur-sm transition-transform duration-300 px-5 sm:px-6 lg:px-8 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between">
-          <Link href="/" className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Travel for Perks
+          <Link href="/" className="flex items-center gap-1.5">
+            <Image
+              src={logoSrc}
+              alt="Travel for Perks"
+              width={64}
+              height={53}
+              className="object-contain"
+            />
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>Travel for Perks</span>
           </Link>
 
           <nav
@@ -88,9 +97,16 @@ export function InternalPageShell({
           />
           <div className="absolute right-0 top-0 flex h-full w-[86vw] max-w-sm flex-col bg-card px-6 py-6 shadow-2xl">
             <div className="mb-8 flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>
-                Travel for Perks
-              </span>
+              <div className="flex items-center gap-1.5">
+                <Image
+                  src={logoSrc}
+                  alt="Travel for Perks"
+                  width={56}
+                  height={46}
+                  className="object-contain"
+                />
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>Travel for Perks</span>
+              </div>
               <button
                 type="button"
                 onClick={closeMenu}

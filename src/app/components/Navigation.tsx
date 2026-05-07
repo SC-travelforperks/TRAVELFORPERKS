@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useScrollHeaderVisibility } from "./useScrollHeaderVisibility";
@@ -8,13 +9,14 @@ import { useScrollHeaderVisibility } from "./useScrollHeaderVisibility";
 export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isVisible, isScrolled } = useScrollHeaderVisibility();
+  const logoSrc = "/ChatGPT_Image_May_7__2026__06_47_26_AM-removebg-preview.png";
 
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <>
       <nav
-        className={`fixed left-0 right-0 top-0 z-50 h-16 px-5 transition-transform duration-300 sm:px-6 lg:px-8 ${
+        className={`fixed left-0 right-0 top-0 z-50 h-20 px-5 transition-transform duration-300 sm:px-6 lg:px-8 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
           isScrolled
@@ -23,8 +25,19 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
         }`}
       >
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between">
-          <Link href="/" className={`text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`} style={{ fontFamily: "'Inter', sans-serif" }}>
-            Travel for Perks
+          <Link href="/" className="flex items-center gap-1.5">
+            <Image
+              src={logoSrc}
+              alt="Travel for Perks"
+              width={64}
+              height={53}
+              className={`object-contain transition-[filter] duration-300 ${
+                isScrolled ? "" : "brightness-0 invert"
+              }`}
+            />
+            <span className={`text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${isScrolled ? "text-primary" : "text-white"}`} style={{ fontFamily: "'Inter', sans-serif" }}>
+              Travel for Perks
+            </span>
           </Link>
 
           <div
@@ -79,12 +92,16 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
           />
           <div className="absolute right-0 top-0 flex h-full w-[86vw] max-w-sm flex-col bg-card px-6 py-6 shadow-2xl">
             <div className="mb-8 flex items-center justify-between">
-              <span
-                className="text-xs tracking-[0.28em] text-primary"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                MENU
-              </span>
+              <div className="flex items-center gap-1.5">
+                <Image
+                  src={logoSrc}
+                  alt="Travel for Perks"
+                  width={56}
+                  height={46}
+                  className="object-contain"
+                />
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>Travel for Perks</span>
+              </div>
               <button
                 type="button"
                 onClick={closeMenu}

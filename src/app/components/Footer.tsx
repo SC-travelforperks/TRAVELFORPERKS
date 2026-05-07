@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useInView } from './useInView'
 import { XIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon } from './icons'
 
@@ -41,7 +42,14 @@ export function Footer({ onPlanClick }: { onPlanClick: () => void }) {
       <div className={`py-14 ${inView ? 'fade-up d-300' : 'opacity-0'}`}>
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div className="mb-12 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
-            <div className="sm:col-span-2 md:col-span-1">
+            <div className="sm:col-span-2 md:col-span-1 text-center">
+              <Image
+                src="/ChatGPT_Image_May_7__2026__06_47_26_AM-removebg-preview.png"
+                alt="Travel for Perks"
+                width={64}
+                height={53}
+                className="mx-auto mb-4 object-contain brightness-0 invert"
+              />
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-primary-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
                 Travel for Perks
               </p>
