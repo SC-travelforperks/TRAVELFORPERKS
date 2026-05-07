@@ -59,7 +59,7 @@ export function Navigation({ onPlanClick }: { onPlanClick: () => void }) {
               className={`hidden px-5 py-2.5 text-[11px] tracking-[0.22em] transition-all duration-300 sm:inline-flex ${
                 isScrolled
                   ? "bg-primary text-primary-foreground hover:bg-primary/85"
-                  : "border border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white hover:text-primary"
+                  : "border border-accent/70 bg-accent/92 text-white shadow-[0_12px_30px_rgba(0,0,0,0.18)] hover:bg-white hover:text-primary"
               }`}
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
