@@ -19,18 +19,18 @@ export function Hero({ onEnquire }: { onEnquire: () => void }) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.24)_0%,rgba(0,0,0,0.12)_28%,rgba(0,0,0,0.04)_52%,transparent_76%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center justify-center px-5 pb-16 pt-24 text-white sm:px-8 sm:pb-0 sm:pt-28">
-        <div className="relative mt-4 max-w-4xl px-4 py-6 text-center sm:mt-0 sm:px-8 sm:py-9">
+      <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center justify-center px-5 pb-10 pt-24 text-white sm:px-8 sm:pb-0 sm:pt-28">
+        <div className="relative max-w-4xl px-4 py-4 text-center sm:px-8 sm:py-9">
           <div className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-[78%] -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.12)_34%,rgba(0,0,0,0.04)_58%,transparent_82%)] blur-2xl" />
           <h1
-            className="fade-up d-200 mb-8 text-[3.45rem] leading-[1.04] tracking-[0.005em] text-white sm:mb-8 sm:text-6xl sm:leading-[1.12] md:text-7xl md:leading-[1.08] lg:text-[5.25rem] lg:leading-[1.06]"
+            className="fade-up d-200 mb-5 text-[2.6rem] leading-[1.08] tracking-[0.005em] text-white sm:mb-8 sm:text-6xl sm:leading-[1.12] md:text-7xl md:leading-[1.08] lg:text-[5.25rem] lg:leading-[1.06]"
             style={{ fontFamily: "'Instrument Serif', serif", textShadow: '0 12px 34px rgba(0,0,0,0.3), 0 3px 10px rgba(0,0,0,0.22)' }}
           >
             Journeys<br />Crafted for<br />the Discerning
           </h1>
-          <div className="mt-10 sm:mt-0">
+          <div className="sm:mt-0">
             <p
-              className="fade-up d-300 mx-auto mb-12 max-w-[18rem] text-[0.84rem] uppercase leading-[2] tracking-[0.14em] text-white sm:mb-11 sm:max-w-2xl sm:text-[0.8rem] sm:leading-[2.2] sm:tracking-[0.2em]"
+              className="fade-up d-300 mx-auto mb-7 max-w-[18rem] text-[0.84rem] uppercase leading-[2] tracking-[0.14em] text-white sm:mb-11 sm:max-w-2xl sm:text-[0.8rem] sm:leading-[2.2] sm:tracking-[0.2em]"
               style={{ fontFamily: "'Inter', sans-serif", textShadow: '0 10px 26px rgba(0,0,0,0.34), 0 3px 12px rgba(0,0,0,0.28)' }}
             >
               Exclusive hotel access, bespoke itineraries, and white-glove service from first enquiry to final farewell.

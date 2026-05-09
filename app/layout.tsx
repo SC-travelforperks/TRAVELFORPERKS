@@ -7,7 +7,7 @@ import { Toaster } from '../src/app/components/ui/sonner'
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 
 const BASE_URL = 'https://www.travelforperks.com'
-const OG_IMAGE = '/og-image.jpg'
+const OG_IMAGE = `${BASE_URL}/og-image.jpg`
 
 const organizationSchema = {
   '@context': 'https://schema.org',
