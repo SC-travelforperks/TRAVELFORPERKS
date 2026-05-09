@@ -7,7 +7,7 @@ import { Toaster } from '../src/app/components/ui/sonner'
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 
 const BASE_URL = 'https://www.travelforperks.com'
-const OG_IMAGE = `${BASE_URL}/og-image.jpg`
+const OG_IMAGE = '/og-image.jpg'
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -33,11 +33,11 @@ const organizationSchema = {
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Travel for Perks — Luxury Travel Planner | Premium Destinations Worldwide',
+    default: 'Travel for Perks | Luxury Travel Planner & Exclusive Resorts',
     template: '%s | Travel for Perks',
   },
   description:
-    "Explore the world's most coveted destinations, exclusive resorts, private villas with us. Maldives, Santorini, Amalfi Coast & beyond — crafted for the discerning traveler.",
+    "Exclusive resorts, private villas & bespoke itineraries worldwide. Maldives, Santorini, Amalfi Coast & beyond — crafted for the discerning traveler.",
   keywords: [
     'luxury travel planner',
     'luxury travel agency India',
@@ -69,9 +69,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Travel for Perks',
-    title: 'Travel for Perks — Luxury Travel Planner | Premium Destinations Worldwide',
+    title: 'Travel for Perks | Luxury Travel Planner & Exclusive Resorts',
     description:
-      "Explore the world's most coveted destinations, exclusive resorts, private villas with us. Maldives, Santorini, Amalfi Coast & beyond — crafted for the discerning traveler.",
+      "Exclusive resorts, private villas & bespoke itineraries worldwide. Maldives, Santorini, Amalfi Coast & beyond — crafted for the discerning traveler.",
     url: BASE_URL,
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'Travel for Perks — Luxury Travel' }],
   },
@@ -79,9 +79,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@travelforperks',
     creator: '@travelforperks',
-    title: 'Travel for Perks — Luxury Travel Planner | Premium Destinations Worldwide',
+    title: 'Travel for Perks | Luxury Travel Planner & Exclusive Resorts',
     description:
-      "Explore the world's most coveted destinations, exclusive resorts, private villas. Maldives, Santorini, Amalfi Coast & beyond.",
+      "Exclusive resorts, private villas & bespoke itineraries. Maldives, Santorini, Amalfi Coast & beyond — crafted for the discerning traveler.",
     images: [OG_IMAGE],
   },
   icons: {
