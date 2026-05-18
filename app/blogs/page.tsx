@@ -3,6 +3,8 @@ import { BlogCard } from "@/app/components/BlogCard";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { getBlogs } from "@/lib/notion";
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: "Travel Insights & Guides",
   description:

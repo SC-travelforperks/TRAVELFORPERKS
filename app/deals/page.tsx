@@ -3,6 +3,8 @@ import { DealsCatalog } from "@/app/components/DealsCatalog";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { getDeals } from "@/lib/notion";
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: "Luxury Travel Deals",
   description:

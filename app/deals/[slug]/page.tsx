@@ -15,6 +15,8 @@ import {
 } from "@/app/components/dealTagStyles";
 import { getDealBlocks, getDealBySlug, getDeals } from "@/lib/notion";
 
+export const dynamic = 'force-dynamic'
+
 type DealPageProps = {
   params: Promise<{ slug: string }>;
 };
@@ -102,13 +104,14 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               alt={deal.title}
               fill
               priority
+              unoptimized
               sizes="100vw"
               className="object-cover"
             />
             <div className="absolute inset-0 bg-black/50" />
           </div>
 
-          <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-6 md:py-24 lg:px-8 lg:py-28">
+          <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-6 md:py-24 lg:px-8 lg:py-28">
             <Link
               href="/deals"
               className="mb-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/80 transition-colors hover:text-white"
@@ -152,7 +155,7 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               )}
 
               <h1
-                className="mb-5 text-4xl sm:text-5xl md:text-6xl"
+                className="mb-5 text-3xl sm:text-5xl md:text-6xl"
                 style={{ fontFamily: "'Instrument Serif', serif" }}
               >
                 {deal.title}
@@ -161,8 +164,8 @@ export default async function DealDetailPage({ params }: DealPageProps) {
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:gap-12">
-          <div>
+        <section className="mx-auto grid max-w-7xl gap-10 px-5 py-10 sm:px-6 sm:py-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:px-8 lg:gap-12">
+          <div className="min-w-0 overflow-hidden">
             <h2
               className="mb-5 text-2xl sm:text-3xl"
               style={{ fontFamily: "'Instrument Serif', serif" }}

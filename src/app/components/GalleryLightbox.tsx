@@ -107,6 +107,7 @@ export function GalleryLightbox({
                   src={activeItem.image}
                   alt={activeItem.title}
                   fill
+                  unoptimized
                   sizes="100vw"
                   className="object-contain"
                 />

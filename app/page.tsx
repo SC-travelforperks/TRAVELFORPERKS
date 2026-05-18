@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import App from '../src/app/App'
 import { getDeals, getReviews, getGallery, getBlogs, getSocialPosts, getAboutStats } from '../src/lib/notion'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }

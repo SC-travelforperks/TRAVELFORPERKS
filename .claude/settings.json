@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(ls -Recurse -Directory \"c:\\\\Users\\\\aasth\\\\Documents\\\\TravelForPerks\" | ForEach-Object { $_.FullName } | Select-Object -First 20)"
+    ]
+  }
+}

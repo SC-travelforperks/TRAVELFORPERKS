@@ -3,6 +3,8 @@ import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { GalleryPageClient } from "@/app/components/GalleryPageClient";
 import { getGallery } from "@/lib/notion";
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: "Travel Gallery",
   description:

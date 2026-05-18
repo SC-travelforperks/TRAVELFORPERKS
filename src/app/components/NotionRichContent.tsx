@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import Image from "next/image";
 import type { BlogBlock, RichTextSpan } from "@/lib/notion";
 
 function RichText({ spans }: { spans: RichTextSpan[] }) {
@@ -73,16 +72,16 @@ function renderBlock(block: BlogBlock, titleFallback: string) {
   if (block.type === "image" && block.image) {
     return (
       <figure key={block.id} className="space-y-3">
-        <div className="overflow-hidden border border-border bg-secondary/20">
-          <Image
-            src={block.image}
-            alt={block.caption || titleFallback}
-            width={1400}
-            height={900}
-            sizes="(max-width: 1024px) 100vw, 896px"
-            className="h-auto w-full object-cover"
-          />
-        </div>
+        <img
+          src={block.image}
+          alt={block.caption || titleFallback}
+          loading="lazy"
+          decoding="async"
+          className="mx-auto block h-auto w-auto max-w-full object-contain"
+          style={{
+            maxHeight: "min(72vh, 720px)",
+          }}
+        />
         {block.caption ? (
           <figcaption
             className="text-xs leading-6 text-muted-foreground sm:text-sm"
@@ -99,7 +98,7 @@ function renderBlock(block: BlogBlock, titleFallback: string) {
     return (
       <h2
         key={block.id}
-        className="text-3xl tracking-[0.02em] sm:text-4xl"
+        className="text-2xl tracking-[0.02em] sm:text-4xl"
         style={{ fontFamily: "'Instrument Serif', serif" }}
       >
         <RichText spans={block.content} />
@@ -111,7 +110,7 @@ function renderBlock(block: BlogBlock, titleFallback: string) {
     return (
       <h3
         key={block.id}
-        className="text-2xl tracking-[0.02em] sm:text-3xl"
+        className="text-xl tracking-[0.02em] sm:text-3xl"
         style={{ fontFamily: "'Instrument Serif', serif" }}
       >
         <RichText spans={block.content} />
@@ -123,7 +122,7 @@ function renderBlock(block: BlogBlock, titleFallback: string) {
     return (
       <h4
         key={block.id}
-        className="text-xl tracking-[0.02em] sm:text-2xl"
+        className="text-lg tracking-[0.02em] sm:text-2xl"
         style={{ fontFamily: "'Instrument Serif', serif" }}
       >
         <RichText spans={block.content} />
@@ -135,7 +134,7 @@ function renderBlock(block: BlogBlock, titleFallback: string) {
     return (
       <blockquote
         key={block.id}
-        className="border-l border-accent/40 pl-6 text-lg italic leading-8 text-foreground/85"
+        className="border-l border-accent/40 pl-4 text-base italic leading-8 text-foreground/85 sm:pl-6 sm:text-lg"
         style={{ fontFamily: "'Instrument Serif', serif" }}
       >
         <RichText spans={block.content} />
@@ -149,7 +148,7 @@ function renderBlock(block: BlogBlock, titleFallback: string) {
 
   if (block.type === "callout") {
     return (
-      <div key={block.id} className="flex gap-4 border border-border bg-secondary/20 p-5 sm:p-6">
+      <div key={block.id} className="flex gap-3 border border-border bg-secondary/20 p-4 sm:gap-4 sm:p-6">
         <span className="mt-0.5 text-xl">{block.icon || "•"}</span>
         <p
           className="text-sm leading-8 text-muted-foreground sm:text-base"
@@ -241,7 +240,7 @@ function renderBlock(block: BlogBlock, titleFallback: string) {
   return (
     <p
       key={block.id}
-      className="text-sm leading-8 text-muted-foreground sm:text-base"
+      className="text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <RichText spans={block.content} />
@@ -296,7 +295,7 @@ export function NotionRichContent({
             {items.map((item) => (
               <li
                 key={item.id}
-                className="flex items-start gap-3 text-sm leading-8 text-muted-foreground sm:text-base"
+                className="flex items-start gap-3 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
@@ -313,7 +312,7 @@ export function NotionRichContent({
       elements.push(
         <ol
           key={block.id}
-          className="space-y-3 pl-5 text-sm leading-8 text-muted-foreground sm:text-base"
+          className="space-y-3 pl-5 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {items.map((item) => (
@@ -329,5 +328,5 @@ export function NotionRichContent({
     elements.push(renderBlock(block, titleFallback));
   }
 
-  return <div className="space-y-8">{elements}</div>;
+  return <div className="space-y-7 [overflow-wrap:anywhere] sm:space-y-8">{elements}</div>;
 }

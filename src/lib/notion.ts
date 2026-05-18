@@ -150,10 +150,7 @@ async function fetchDealsFromNotion(): Promise<Deal[]> {
   }
 }
 
-export const getDeals = unstable_cache(fetchDealsFromNotion, ["notion-deals"], {
-  tags: ["deals"],
-  revalidate: 60,
-});
+export const getDeals = cache(fetchDealsFromNotion);
 
 export async function getDealBySlug(slug: string): Promise<Deal | null> {
   const deals = await getDeals();
@@ -260,11 +257,7 @@ async function fetchGalleryFromNotion(): Promise<GalleryItem[]> {
   }
 }
 
-export const getGallery = unstable_cache(
-  fetchGalleryFromNotion,
-  ["notion-gallery"],
-  { tags: ["gallery"], revalidate: 60 }
-);
+export const getGallery = cache(fetchGalleryFromNotion);
 
 // ─── Blogs ────────────────────────────────────────────────────────────────────
 
@@ -324,6 +317,7 @@ export interface BlogPost {
   image: string;
   excerpt: string;
   category: string;
+  tags: string[];
 }
 
 export interface RichTextSpan {
@@ -392,6 +386,7 @@ async function fetchBlogsFromNotion(): Promise<BlogPost[]> {
 
       const slug = slugify(getRichText(props.Slug) || title);
       const image = getFileUrl(props.Cover) || getUrl(props.Cover);
+      const tags = getTags(props.Tags);
 
       const dateProp = props.Date as { date?: { start?: string } } | null;
       const rawDate = dateProp?.date?.start ?? "";
@@ -411,6 +406,7 @@ async function fetchBlogsFromNotion(): Promise<BlogPost[]> {
         image,
         excerpt: getRichText(props.Excerpt),
         category: getSelect(props.Category),
+        tags: tags.length ? tags : getMultiSelect(props.Tag),
       });
     }
 
@@ -421,10 +417,7 @@ async function fetchBlogsFromNotion(): Promise<BlogPost[]> {
   }
 }
 
-export const getBlogs = unstable_cache(fetchBlogsFromNotion, ["notion-blogs"], {
-  tags: ["blogs"],
-  revalidate: 60,
-});
+export const getBlogs = cache(fetchBlogsFromNotion);
 
 async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
   if (!process.env.NOTION_TOKEN) return [];
@@ -599,17 +592,9 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
   }
 }
 
-export const getBlogBlocks = cache(unstable_cache(
-  fetchBlogBlocksFromNotion,
-  ["notion-blog-blocks"],
-  { tags: ["blogs"], revalidate: 60 }
-));
+export const getBlogBlocks = cache(fetchBlogBlocksFromNotion);
 
-export const getDealBlocks = cache(unstable_cache(
-  fetchBlogBlocksFromNotion,
-  ["notion-deal-blocks"],
-  { tags: ["deals"], revalidate: 60 }
-));
+export const getDealBlocks = cache(fetchBlogBlocksFromNotion);
 
 // ─── Social Posts ─────────────────────────────────────────────────────────────
 
@@ -764,6 +749,17 @@ function getMultiSelect(prop: unknown): string[] {
   if (!prop || typeof prop !== "object") return [];
   const p = prop as { multi_select?: Array<{ name?: string }> };
   return p.multi_select?.map((item) => item.name ?? "").filter(Boolean) ?? [];
+}
+
+function getTags(prop: unknown): string[] {
+  const multiSelectTags = getMultiSelect(prop);
+  if (multiSelectTags.length) return multiSelectTags;
+
+  const text = getRichText(prop) || getTitle(prop) || getUrl(prop);
+  return Array.from(new Set(text
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean)));
 }
 
 function getNumber(prop: unknown): number {

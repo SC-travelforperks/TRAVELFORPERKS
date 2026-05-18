@@ -13,6 +13,7 @@ export function BlogCard({ post, priority = false }: { post: BlogPost; priority?
               alt={post.title}
               fill
               priority={priority}
+              unoptimized
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
@@ -43,6 +44,19 @@ export function BlogCard({ post, priority = false }: { post: BlogPost; priority?
           <p className="mb-5 text-sm leading-6 text-muted-foreground line-clamp-2" style={{ fontFamily: "'Inter', sans-serif" }}>
             {post.excerpt}
           </p>
+        )}
+        {post.tags.length > 0 && (
+          <div className="mb-5 flex flex-wrap gap-2">
+            {post.tags.map((tag) => (
+              <span
+                key={tag}
+                className="border border-border bg-secondary/30 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground transition-colors group-hover:border-accent/40 group-hover:text-primary"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         )}
         <span className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-primary transition-colors group-hover:text-accent" style={{ fontFamily: "'Inter', sans-serif" }}>
           READ ARTICLE

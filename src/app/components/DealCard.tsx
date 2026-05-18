@@ -25,6 +25,7 @@ export function DealCard({ deal, priority = false }: { deal: Deal; priority?: bo
           width={1200}
           height={900}
           priority={priority}
+          unoptimized
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
           className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:h-72"
         />
