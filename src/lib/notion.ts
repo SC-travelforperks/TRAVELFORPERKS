@@ -1,4 +1,3 @@
-import { cache } from "react";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { unstable_cache } from "next/cache";
@@ -17,8 +16,10 @@ export function slugify(text: string): string {
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
-  fetch: (...args) => fetch(...args),
+  fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
 });
+
+const NOTION_CACHE_SECONDS = 60;
 
 async function queryNotionCollection(args: {
   database_id: string;
@@ -150,7 +151,11 @@ async function fetchDealsFromNotion(): Promise<Deal[]> {
   }
 }
 
-export const getDeals = cache(fetchDealsFromNotion);
+export const getDeals = unstable_cache(
+  fetchDealsFromNotion,
+  ["notion-deals"],
+  { tags: ["deals"], revalidate: NOTION_CACHE_SECONDS }
+);
 
 export async function getDealBySlug(slug: string): Promise<Deal | null> {
   const deals = await getDeals();
@@ -206,7 +211,7 @@ async function fetchReviewsFromNotion(): Promise<Review[]> {
 export const getReviews = unstable_cache(
   fetchReviewsFromNotion,
   ["notion-reviews"],
-  { tags: ["reviews"], revalidate: 60 }
+  { tags: ["reviews"], revalidate: NOTION_CACHE_SECONDS }
 );
 
 // ─── Gallery ──────────────────────────────────────────────────────────────────
@@ -257,7 +262,11 @@ async function fetchGalleryFromNotion(): Promise<GalleryItem[]> {
   }
 }
 
-export const getGallery = cache(fetchGalleryFromNotion);
+export const getGallery = unstable_cache(
+  fetchGalleryFromNotion,
+  ["notion-gallery"],
+  { tags: ["gallery"], revalidate: NOTION_CACHE_SECONDS }
+);
 
 // ─── Blogs ────────────────────────────────────────────────────────────────────
 
@@ -306,7 +315,7 @@ async function fetchAboutStatsFromNotion(): Promise<AboutStat[]> {
 export const getAboutStats = unstable_cache(
   fetchAboutStatsFromNotion,
   ["notion-about-stats"],
-  { tags: ["about-stats"], revalidate: 60 }
+  { tags: ["about-stats"], revalidate: NOTION_CACHE_SECONDS }
 );
 
 export interface BlogPost {
@@ -434,7 +443,11 @@ async function fetchBlogsFromNotion(): Promise<BlogPost[]> {
   }
 }
 
-export const getBlogs = cache(fetchBlogsFromNotion);
+export const getBlogs = unstable_cache(
+  fetchBlogsFromNotion,
+  ["notion-blogs"],
+  { tags: ["blogs"], revalidate: NOTION_CACHE_SECONDS }
+);
 
 async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
   if (!process.env.NOTION_TOKEN) return [];
@@ -699,9 +712,17 @@ async function parseNotionBlocks(rawBlocks: Array<unknown>): Promise<BlogBlock[]
     return blocks;
 }
 
-export const getBlogBlocks = cache(fetchBlogBlocksFromNotion);
+export const getBlogBlocks = unstable_cache(
+  fetchBlogBlocksFromNotion,
+  ["notion-blog-blocks"],
+  { tags: ["blog-blocks"], revalidate: NOTION_CACHE_SECONDS }
+);
 
-export const getDealBlocks = cache(fetchBlogBlocksFromNotion);
+export const getDealBlocks = unstable_cache(
+  fetchBlogBlocksFromNotion,
+  ["notion-deal-blocks"],
+  { tags: ["deal-blocks"], revalidate: NOTION_CACHE_SECONDS }
+);
 
 // ─── Social Posts ─────────────────────────────────────────────────────────────
 
@@ -765,7 +786,7 @@ async function fetchSocialFromNotion(): Promise<SocialPost[]> {
 export const getSocialPosts = unstable_cache(
   fetchSocialFromNotion,
   ["notion-social"],
-  { tags: ["social"], revalidate: 60 }
+  { tags: ["social"], revalidate: NOTION_CACHE_SECONDS }
 );
 
 // ─── Property helpers ─────────────────────────────────────────────────────────
