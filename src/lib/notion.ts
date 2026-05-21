@@ -328,6 +328,7 @@ export interface RichTextSpan {
   strikethrough?: boolean;
   code?: boolean;
   href?: string;
+  color?: string;
 }
 
 export interface BlogBlock {
@@ -337,6 +338,7 @@ export interface BlogBlock {
     | "heading_1"
     | "heading_2"
     | "heading_3"
+    | "heading_4"
     | "bullet"
     | "numbered"
     | "quote"
@@ -344,18 +346,33 @@ export interface BlogBlock {
     | "callout"
     | "code"
     | "table"
+    | "table_of_contents"
+    | "to_do"
+    | "toggle"
+    | "synced_block"
     | "image"
     | "bookmark"
     | "embed"
+    | "audio"
     | "video"
     | "file"
-    | "pdf";
+    | "pdf"
+    | "column_list";
   content: RichTextSpan[];
   image?: string;
   caption?: string;
+  captionRichText?: RichTextSpan[];
   icon?: string;
   language?: string;
   url?: string;
+  color?: string;
+  checked?: boolean;
+  children?: BlogBlock[];
+  columns?: Array<{
+    id: string;
+    widthRatio?: number;
+    blocks: BlogBlock[];
+  }>;
   table?: {
     hasColumnHeader: boolean;
     hasRowHeader: boolean;
@@ -423,12 +440,70 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
   if (!process.env.NOTION_TOKEN) return [];
 
   try {
-    const response = await notion.blocks.children.list({ block_id: pageId });
+    const response = await listNotionBlockChildren(pageId);
+    return parseNotionBlocks(response);
+  } catch (err) {
+    console.error("[Notion] Failed to fetch blog blocks:", err);
+    return [];
+  }
+}
+
+async function listNotionBlockChildren(blockId: string): Promise<Array<unknown>> {
+  const results: Array<unknown> = [];
+  let startCursor: string | undefined;
+
+  do {
+    const response = await notion.blocks.children.list({
+      block_id: blockId,
+      page_size: 100,
+      start_cursor: startCursor,
+    });
+
+    results.push(...response.results);
+    startCursor = response.has_more ? response.next_cursor ?? undefined : undefined;
+  } while (startCursor);
+
+  return results;
+}
+
+async function parseNotionBlocks(rawBlocks: Array<unknown>): Promise<BlogBlock[]> {
     const blocks: BlogBlock[] = [];
 
-    for (const block of response.results) {
+    for (const block of rawBlocks) {
       const b = block as { id: string; type: string; [key: string]: unknown };
       const type = b.type;
+
+      if (type === "column_list") {
+        const columnBlocks = await listNotionBlockChildren(b.id);
+        const columns: NonNullable<BlogBlock["columns"]> = [];
+
+        for (const columnBlock of columnBlocks) {
+          const column = columnBlock as {
+            id: string;
+            type?: string;
+            column?: { width_ratio?: number };
+          };
+
+          if (column.type !== "column") continue;
+
+          const children = await listNotionBlockChildren(column.id);
+          columns.push({
+            id: column.id,
+            widthRatio: column.column?.width_ratio,
+            blocks: await parseNotionBlocks(children),
+          });
+        }
+
+        if (!columns.length) continue;
+
+        blocks.push({
+          id: b.id,
+          type: "column_list",
+          content: [],
+          columns,
+        });
+        continue;
+      }
 
       if (type === "image") {
         const blockData = b.image as
@@ -447,19 +522,32 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
               : "";
 
         if (!image) continue;
+        const captionRichText = parseRichText(blockData?.caption);
 
         blocks.push({
           id: b.id,
           type: "image",
           content: [],
           image,
-          caption: richTextToPlainText(blockData?.caption),
+          caption: spansToPlainText(captionRichText),
+          captionRichText,
         });
         continue;
       }
 
       if (type === "divider") {
         blocks.push({ id: b.id, type: "divider", content: [] });
+        continue;
+      }
+
+      if (type === "table_of_contents") {
+        const blockData = b.table_of_contents as { color?: string } | undefined;
+        blocks.push({
+          id: b.id,
+          type: "table_of_contents",
+          content: [],
+          color: blockData?.color,
+        });
         continue;
       }
 
@@ -470,10 +558,10 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
               has_row_header?: boolean;
             }
           | undefined;
-        const rowsResponse = await notion.blocks.children.list({ block_id: b.id });
+        const rowsResponse = await listNotionBlockChildren(b.id);
         const rows: RichTextSpan[][][] = [];
 
-        for (const rowBlock of rowsResponse.results) {
+        for (const rowBlock of rowsResponse) {
           const row = rowBlock as {
             type?: string;
             table_row?: { cells?: Array<Array<unknown>> };
@@ -501,18 +589,21 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
       }
 
       if (type === "bookmark" || type === "embed") {
-        const blockData = b[type] as { url?: string } | undefined;
+        const blockData = b[type] as { url?: string; caption?: Array<unknown> } | undefined;
         if (!blockData?.url) continue;
+        const captionRichText = parseRichText(blockData.caption);
         blocks.push({
           id: b.id,
           type,
           content: [],
           url: blockData.url,
+          caption: spansToPlainText(captionRichText),
+          captionRichText,
         });
         continue;
       }
 
-      if (type === "video" || type === "file" || type === "pdf") {
+      if (type === "audio" || type === "video" || type === "file" || type === "pdf") {
         const blockData = b[type] as
           | {
               type?: "file" | "external";
@@ -528,12 +619,14 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
               ? blockData.external?.url ?? ""
               : "";
         if (!url) continue;
+        const captionRichText = parseRichText(blockData?.caption);
         blocks.push({
           id: b.id,
           type,
           content: [],
           url,
-          caption: richTextToPlainText(blockData?.caption),
+          caption: spansToPlainText(captionRichText),
+          captionRichText,
         });
         continue;
       }
@@ -544,8 +637,12 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
           "heading_1",
           "heading_2",
           "heading_3",
+          "heading_4",
           "bulleted_list_item",
           "numbered_list_item",
+          "to_do",
+          "toggle",
+          "synced_block",
           "quote",
           "callout",
           "code",
@@ -565,14 +662,25 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
         rich_text?: Array<unknown>;
         icon?: { type?: "emoji"; emoji?: string };
         language?: string;
+        color?: string;
+        checked?: boolean;
       };
       const content = parseRichText(blockData?.rich_text);
+      const children = b.has_children
+        ? await parseNotionBlocks(await listNotionBlockChildren(b.id))
+        : [];
 
       if (
         content.length === 0 &&
+        children.length === 0 &&
         normalizedType !== "callout" &&
         normalizedType !== "code"
       ) {
+        continue;
+      }
+
+      if (content.length === 0 && normalizedType === "paragraph" && children.length > 0) {
+        blocks.push(...children);
         continue;
       }
 
@@ -582,14 +690,13 @@ async function fetchBlogBlocksFromNotion(pageId: string): Promise<BlogBlock[]> {
         content,
         icon: blockData?.icon?.type === "emoji" ? blockData.icon.emoji ?? "" : undefined,
         language: blockData?.language,
+        color: blockData?.color,
+        checked: blockData?.checked,
+        children: children.length ? children : undefined,
       });
     }
 
     return blocks;
-  } catch (err) {
-    console.error("[Notion] Failed to fetch blog blocks:", err);
-    return [];
-  }
 }
 
 export const getBlogBlocks = cache(fetchBlogBlocksFromNotion);
@@ -676,7 +783,12 @@ function getRichText(prop: unknown): string {
 }
 
 function richTextToPlainText(value: unknown): string | undefined {
-  const text = parseRichText(Array.isArray(value) ? value : []).map((span) => span.text).join("").trim();
+  const text = spansToPlainText(parseRichText(Array.isArray(value) ? value : []));
+  return text || undefined;
+}
+
+function spansToPlainText(spans: RichTextSpan[]): string | undefined {
+  const text = spans.map((span) => span.text).join("").trim();
   return text || undefined;
 }
 
@@ -696,6 +808,7 @@ function parseRichText(value: unknown): RichTextSpan[] {
         underline?: boolean;
         strikethrough?: boolean;
         code?: boolean;
+        color?: string;
       };
       text?: { link?: { url?: string | null } | null };
     };
@@ -710,6 +823,7 @@ function parseRichText(value: unknown): RichTextSpan[] {
       strikethrough: textItem.annotations?.strikethrough ?? false,
       code: textItem.annotations?.code ?? false,
       href: textItem.href ?? textItem.text?.link?.url ?? undefined,
+      color: textItem.annotations?.color,
     });
   }
 
