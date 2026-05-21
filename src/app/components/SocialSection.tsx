@@ -35,11 +35,16 @@ function getYouTubeEmbedUrl(url: string): string | null {
     const u = new URL(url);
     let videoId: string | null = null;
     if (u.hostname.includes("youtu.be")) {
-      videoId = u.pathname.slice(1);
+      videoId = u.pathname.slice(1).split("/")[0] ?? null;
     } else if (u.hostname.includes("youtube.com")) {
-      videoId = u.searchParams.get("v");
+      const parts = u.pathname.split("/").filter(Boolean);
+      if (parts[0] === "shorts" || parts[0] === "embed" || parts[0] === "live") {
+        videoId = parts[1] ?? null;
+      } else {
+        videoId = u.searchParams.get("v");
+      }
     }
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0` : null;
   } catch {
     return null;
   }
@@ -112,16 +117,18 @@ export function SocialSection({ posts }: { posts: SocialPost[] }) {
                 </div>
 
                 <div>
-                  {post.platform === "YouTube" && youtubeEmbedUrl ? (
-                    <div className="aspect-video w-full">
-                      <iframe
-                        src={youtubeEmbedUrl}
-                        title={post.name || "YouTube video"}
-                        className="h-full w-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </div>
+                  {post.platform === "YouTube" ? (
+                    youtubeEmbedUrl ? (
+                      <div className="aspect-video w-full">
+                        <iframe
+                          src={youtubeEmbedUrl}
+                          title={post.name || "YouTube video"}
+                          className="h-full w-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    ) : null
                   ) : post.platform === "Twitter" ? (
                     <div className="px-4 py-2">
                       <blockquote
