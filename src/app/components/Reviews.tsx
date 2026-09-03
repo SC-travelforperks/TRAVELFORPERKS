@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useInView } from './useInView'
 import type { Review } from '@/lib/notion'
 
@@ -70,25 +70,66 @@ export function Reviews({ reviews }: { reviews: Review[] }) {
               className={`flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none ${inView ? 'fade-up d-200' : 'opacity-0'}`}
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {reviews.map((review) => (
-                <div
-                  key={review.id}
-                  className="relative flex-shrink-0 w-[85vw] max-w-sm snap-start border border-border bg-card px-7 py-8 sm:w-80"
-                >
-                  <div className="mb-5 text-5xl leading-none text-accent/25" style={{ fontFamily: "'Cormorant Garamond', serif" }}>&ldquo;</div>
-                  <p className="mb-8 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    {review.quote}
-                  </p>
-                  <div className="border-t border-border pt-5">
-                    <div className="text-sm uppercase tracking-[0.16em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>{review.name}</div>
-                    <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-accent" style={{ fontFamily: "'Inter', sans-serif" }}>{review.location}</div>
-                  </div>
-                </div>
-              ))}
+              {reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
             </div>
           </>
         )}
       </div>
     </section>
+  )
+}
+
+function ReviewCard({ review }: { review: Review }) {
+  const quoteRef = useRef<HTMLDivElement | null>(null)
+  const [canScroll, setCanScroll] = useState(false)
+  const [atBottom, setAtBottom] = useState(false)
+
+  const updateScrollState = useCallback(() => {
+    const element = quoteRef.current
+    if (!element) return
+
+    const hasOverflow = element.scrollHeight > element.clientHeight + 4
+    setCanScroll(hasOverflow)
+    setAtBottom(!hasOverflow || element.scrollTop + element.clientHeight >= element.scrollHeight - 8)
+  }, [])
+
+  useEffect(() => {
+    updateScrollState()
+
+    const element = quoteRef.current
+    if (!element || typeof ResizeObserver === 'undefined') return
+
+    const observer = new ResizeObserver(updateScrollState)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [review.quote, updateScrollState])
+
+  return (
+    <div className="relative flex h-[32rem] flex-shrink-0 w-[85vw] max-w-sm snap-start flex-col border border-border bg-card px-7 py-8 sm:w-80">
+      <div className="mb-5 text-5xl leading-none text-accent/25" style={{ fontFamily: "'Cormorant Garamond', serif" }}>&ldquo;</div>
+      <div className="min-h-0 flex-1 -mr-7">
+        <div
+          ref={quoteRef}
+          onScroll={updateScrollState}
+          className="review-scroll h-full overflow-y-auto pr-7"
+        >
+          <p className="mb-8 text-sm leading-7 text-muted-foreground sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
+            {review.quote}
+          </p>
+        </div>
+        {canScroll && !atBottom && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-end bg-gradient-to-t from-card via-card/90 to-transparent pb-3 pt-8 pr-8">
+            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.16em] text-accent" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Scroll for more
+              <ChevronDown className="h-3 w-3" />
+            </span>
+          </div>
+        )}
+      </div>
+      <div className="mt-5 border-t border-border pt-5">
+        <div className="text-sm uppercase tracking-[0.16em] text-primary" style={{ fontFamily: "'Inter', sans-serif" }}>{review.name}</div>
+        <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-accent" style={{ fontFamily: "'Inter', sans-serif" }}>{review.location}</div>
+      </div>
+    </div>
   )
 }

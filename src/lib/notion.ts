@@ -189,15 +189,20 @@ async function fetchReviewsFromNotion(): Promise<Review[]> {
       if (!("properties" in page)) continue;
 
       const props = page.properties as Record<string, unknown>;
-      const name = getTitle(props.Name);
-      const quote = getRichText(props.Quote);
+      // Notion Forms can rename database properties from their form prompts.
+      // Support both the original CMS names and the current form-generated
+      // names so creating the form does not make existing reviews disappear.
+      const name = getTitle(props.Name) || getTitle(props["Your Name"]);
+      const quote = getRichText(props.Quote) || getRichText(props["Your Review"]);
       if (!name || !quote) continue;
 
       reviews.push({
         id: page.id,
         name,
         quote,
-        location: getRichText(props.Location),
+        location:
+          getRichText(props.Location) ||
+          getRichText(props["Where Did You Travel?"]),
       });
     }
 
