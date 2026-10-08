@@ -6,6 +6,7 @@ import { ArrowLeft, MapPin } from "lucide-react";
 import { InternalPageShell } from "@/app/components/InternalPageShell";
 import { DealViewTracker } from "@/app/components/DealViewTracker";
 import { DealWhatsAppButton } from "@/app/components/DealWhatsAppButton";
+import { DealPayNowButton } from "@/app/components/DealPayNowButton";
 import { NotionRichContent, getBlocksPlainText } from "@/app/components/NotionRichContent";
 import {
   DealBadgeIcon,
@@ -249,6 +250,9 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               )}
 
               <div className="space-y-3 pt-2">
+                {deal.paymentLink && (
+                  <DealPayNowButton title={deal.title} slug={deal.slug} href={deal.paymentLink} />
+                )}
                 <DealWhatsAppButton title={deal.title} />
                 <Link
                   href="/contact-us"

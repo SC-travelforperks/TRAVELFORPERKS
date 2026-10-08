@@ -106,6 +106,12 @@ export interface Deal {
   image: string;
   price: number;
   badge: DealBadge | null;
+  paymentLink: string | null;
+}
+
+function getPaymentLink(prop: unknown): string | null {
+  const url = getUrl(prop).trim();
+  return /^https:\/\//i.test(url) ? url : null;
 }
 
 async function fetchDealsFromNotion(): Promise<Deal[]> {
@@ -141,6 +147,7 @@ async function fetchDealsFromNotion(): Promise<Deal[]> {
         image,
         price: getNumber(props.Price),
         badge: getMultiSelect(props.Badge)[0] || null,
+        paymentLink: getPaymentLink(props["Payment Link"]),
       });
     }
 

@@ -121,6 +121,22 @@ export function DealCard({ deal, priority = false }: { deal: Deal; priority?: bo
             <span className="h-px w-6 bg-current transition-all duration-300 group-hover:w-10" />
           </Link>
         </div>
+
+        {deal.paymentLink && (
+          <a
+            href={deal.paymentLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(event) => {
+              event.stopPropagation()
+              trackEvent('pay_now_click', { item_name: deal.title, item_id: deal.slug, source: 'deal_card' })
+            }}
+            className="mt-4 inline-flex w-full items-center justify-center bg-primary px-6 py-3.5 text-[11px] uppercase tracking-[0.18em] text-primary-foreground transition-opacity hover:opacity-90"
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            Pay now
+          </a>
+        )}
       </div>
     </article>
   )
